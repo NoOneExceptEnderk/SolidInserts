@@ -1,7 +1,7 @@
 {
   "id": "solidinserts",
   "name": "SolidInserts",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "description": "Crea sedi per inserti filettati a caldo sui bordi circolari dei fori.",
   "capabilities": ["commands@0.1"],
   "runtime": {
@@ -19,7 +19,7 @@
           "properties": {
             "serie": {
               "type": "string",
-              "title": "Serie CNC Kitchen",
+              "title": "Tipo",
               "description": "Short Version per M3, M4 e M5. VORON M3 × 5 × 4 per M3.",
               "enum": ["Standard", "Short Version", "VORON M3 × 5 × 4"],
               "default": "Standard"

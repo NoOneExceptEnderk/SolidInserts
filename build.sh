@@ -8,6 +8,7 @@ mkdir -p "$package"
 wasm-tools component new "${CARGO_TARGET_DIR:-target}/wasm32-unknown-unknown/release/solidinserts.wasm" -o "$package/plugin.wasm"
 wasm-tools validate "$package/plugin.wasm"
 cp plugin.json "$package/"
+cp LICENSE "$package/"
 cp wit/LICENSE-MIT "$package/LICENSE-SOLIDCRAFT-WIT"
 
 python3 - <<'PY'
@@ -20,7 +21,7 @@ package = Path("dist/solidinserts")
 manifest = json.loads((package / "plugin.json").read_text(encoding="utf-8"))
 archive = package.parent / f"solidinserts-{manifest['version']}.zip"
 with ZipFile(archive, "w", ZIP_DEFLATED) as output:
-    for name in ("plugin.json", "plugin.wasm", "LICENSE-SOLIDCRAFT-WIT"):
+    for name in ("plugin.json", "plugin.wasm", "LICENSE", "LICENSE-SOLIDCRAFT-WIT"):
         output.write(package / name, f"{package.name}/{name}")
 checksum = hashlib.sha256(archive.read_bytes()).hexdigest()
 archive.with_suffix(".zip.sha256").write_text(f"{checksum}  {archive.name}\n", encoding="ascii")

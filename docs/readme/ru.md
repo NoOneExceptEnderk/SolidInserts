@@ -13,7 +13,7 @@ SolidInserts привязывает каждое посадочное место
 
 ## Как попробовать SolidInserts
 
-1. Используйте [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Соберите плагин командами ниже. Результат появится в `dist/solidinserts-<version>.zip`.
+1. Используйте [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Скачайте ZIP плагина из раздела [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases), когда он станет доступен. Плагин также можно собрать командами ниже. Результат появится в `dist/solidinserts-<version>.zip`.
 2. Распакуйте ZIP в каталог плагинов своей системы. Файлы `plugin.json` и `plugin.wasm` должны находиться вместе в подкаталоге `solidinserts`.
 
    | Система | Каталог плагинов |

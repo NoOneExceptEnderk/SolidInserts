@@ -13,7 +13,7 @@ SolidInserts 使用孔口的圆形边缘定位安装孔。选择 CNC Kitchen 嵌
 
 ## 试用 SolidInserts
 
-1. 使用 [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0)。使用下方命令编译插件，生成 `dist/solidinserts-<version>.zip`。
+1. 使用 [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0)。插件 ZIP 发布后可从[发行版页面](https://github.com/NoOneExceptEnderk/SolidInserts/releases)下载。也可以使用下方命令编译插件，生成 `dist/solidinserts-<version>.zip`。
 2. 将 ZIP 解压到系统对应的插件目录。`plugin.json` 和 `plugin.wasm` 应放在同一个 `solidinserts` 子目录中。
 
    | 系统 | 插件目录 |

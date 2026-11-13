@@ -13,7 +13,7 @@ SolidInserts usa il bordo circolare del foro per posizionare la sede. Scegli una
 
 ## Prova SolidInserts
 
-1. Usa [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Compila il plugin con i comandi riportati sotto per generare `dist/solidinserts-<versione>.zip`.
+1. Usa [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Scarica lo ZIP del plugin dai [rilasci](https://github.com/NoOneExceptEnderk/SolidInserts/releases) quando disponibile. Puoi anche compilare il plugin con i comandi riportati sotto per generare `dist/solidinserts-<versione>.zip`.
 2. Estrai lo ZIP nella cartella dei plugin del tuo sistema. Tieni `plugin.json` e `plugin.wasm` insieme nella sottocartella `solidinserts`.
 
    | Sistema | Cartella dei plugin |

@@ -13,7 +13,7 @@ SolidInserts positioniert die Aufnahme an der kreisförmigen Bohrungskante. Wäh
 
 ## SolidInserts ausprobieren
 
-1. Verwende [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Erstelle das Plugin mit den Befehlen unten. Dabei entsteht `dist/solidinserts-<Version>.zip`.
+1. Verwende [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Lade das Plugin-ZIP aus den [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases) herunter, sobald es verfügbar ist. Du kannst das Plugin auch mit den Befehlen unten erstellen. Dabei entsteht `dist/solidinserts-<Version>.zip`.
 2. Entpacke das ZIP in den Plugin-Ordner deines Systems. Lass `plugin.json` und `plugin.wasm` zusammen im Unterordner `solidinserts`.
 
    | System | Plugin-Ordner |

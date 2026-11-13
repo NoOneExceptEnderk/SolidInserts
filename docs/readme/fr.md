@@ -13,7 +13,7 @@ SolidInserts positionne chaque logement à partir de l’arête circulaire du tr
 
 ## Essayer SolidInserts
 
-1. Utilisez [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Compilez l’extension avec les commandes ci-dessous pour produire `dist/solidinserts-<version>.zip`.
+1. Utilisez [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Téléchargez le ZIP de l’extension depuis les [versions publiées](https://github.com/NoOneExceptEnderk/SolidInserts/releases) lorsqu’il est disponible. Vous pouvez aussi compiler l’extension avec les commandes ci-dessous pour produire `dist/solidinserts-<version>.zip`.
 2. Extrayez le ZIP dans le dossier des extensions de votre système. Laissez `plugin.json` et `plugin.wasm` ensemble dans le sous-dossier `solidinserts`.
 
    | Système | Dossier des extensions |

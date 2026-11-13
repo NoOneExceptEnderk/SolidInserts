@@ -13,7 +13,7 @@ O SolidInserts posiciona cada alojamento a partir da aresta circular do furo. Es
 
 ## Experimentar o SolidInserts
 
-1. Usa o [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Compila o módulo com os comandos abaixo para obter `dist/solidinserts-<versão>.zip`.
+1. Usa o [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Descarrega o ZIP do módulo a partir dos [lançamentos](https://github.com/NoOneExceptEnderk/SolidInserts/releases) quando estiver disponível. Também podes compilar o módulo com os comandos abaixo para obter `dist/solidinserts-<versão>.zip`.
 2. Extrai o ZIP para a pasta de módulos do teu sistema. Mantém `plugin.json` e `plugin.wasm` juntos na subpasta `solidinserts`.
 
    | Sistema | Pasta de módulos |

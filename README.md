@@ -13,7 +13,7 @@ SolidInserts uses the circular edge of each hole to locate the seat. Choose a CN
 
 ## Try SolidInserts
 
-1. Use [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Build the plugin with the commands below to produce `dist/solidinserts-<version>.zip`.
+1. Use [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Get the plugin ZIP from [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases) when available. You can also build it with the commands below to produce `dist/solidinserts-<version>.zip`.
 2. Extract the ZIP into the plugins folder for your system. Keep `plugin.json` and `plugin.wasm` together in the `solidinserts` subfolder.
 
    | OS | Plugins folder |

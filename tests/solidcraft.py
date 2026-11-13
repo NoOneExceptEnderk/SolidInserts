@@ -206,8 +206,12 @@ def main():
         root = Path(temporary)
         with ZipFile(args.zip) as archive:
             assert set(archive.namelist()) == {
-                "solidinserts/plugin.json", "solidinserts/plugin.wasm", "solidinserts/LICENSE-SOLIDCRAFT-WIT",
+                "solidinserts/plugin.json", "solidinserts/plugin.wasm",
+                "solidinserts/LICENSE", "solidinserts/LICENSE-SOLIDCRAFT-WIT",
             }
+            project = Path(__file__).resolve().parents[1]
+            assert archive.read("solidinserts/LICENSE") == (project / "LICENSE").read_bytes()
+            assert archive.read("solidinserts/LICENSE-SOLIDCRAFT-WIT") == (project / "wit/LICENSE-MIT").read_bytes()
             archive.extractall(root)
         run_tests(SolidCraft(args.cli, root, root / "solidinserts"))
 

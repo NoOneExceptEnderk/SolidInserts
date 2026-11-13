@@ -13,7 +13,7 @@ SolidCraft Desktop-இல் ஏற்கெனவே உள்ள துளை�
 
 ## SolidInserts-ஐ முயற்சி செய்யுங்கள்
 
-1. [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0) பதிப்பைப் பயன்படுத்துங்கள். கீழுள்ள கட்டளைகளால் செருகுநிரலைத் தொகுத்து `dist/solidinserts-<version>.zip` கோப்பை உருவாக்குங்கள்.
+1. [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0) பதிப்பைப் பயன்படுத்துங்கள். செருகுநிரலின் ZIP கிடைக்கும்போது [வெளியீடுகள் பக்கத்திலிருந்து](https://github.com/NoOneExceptEnderk/SolidInserts/releases) பதிவிறக்கலாம். அல்லது கீழுள்ள கட்டளைகளால் செருகுநிரலைத் தொகுத்து `dist/solidinserts-<version>.zip` கோப்பை உருவாக்குங்கள்.
 2. உங்கள் கணினிக்கான செருகுநிரல் கோப்புறையில் ZIP கோப்பைப் பிரித்தெடுங்கள். `plugin.json`, `plugin.wasm` இரண்டும் `solidinserts` துணைக் கோப்புறையில் இருக்க வேண்டும்.
 
    | இயங்குதளம் | செருகுநிரல் கோப்புறை |

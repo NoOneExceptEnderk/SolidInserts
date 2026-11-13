@@ -13,7 +13,7 @@ SolidInserts sitúa cada alojamiento a partir del borde circular del orificio. E
 
 ## Prueba SolidInserts
 
-1. Usa [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Compila el complemento con los comandos de abajo para generar `dist/solidinserts-<versión>.zip`.
+1. Usa [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Descarga el ZIP del complemento desde [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases) cuando esté disponible. También puedes compilarlo con los comandos de abajo para generar `dist/solidinserts-<versión>.zip`.
 2. Descomprime el ZIP en la carpeta de complementos de tu sistema. Mantén `plugin.json` y `plugin.wasm` juntos dentro de la subcarpeta `solidinserts`.
 
    | Sistema | Carpeta de complementos |
