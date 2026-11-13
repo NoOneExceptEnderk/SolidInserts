@@ -29,6 +29,6 @@ RON
 
 # Preserve the pilot. The working copy and any saves to it stay under dist/.
 example="$(mktemp --suffix=.sc "$workspace/dist/provino-select-holes-XXXXXX")"
-cp -- "$workspace/examples/provino-fori-pilota.sc" "$example"
+cp -- "$workspace/examples/pilot-holes.sc" "$example"
 printf 'Provino di lavoro: %s\n' "$example"
 "$binary" "$example"

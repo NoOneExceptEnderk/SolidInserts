@@ -1,22 +1,20 @@
+# SolidInserts
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/branding/solidinserts-logo-inverse.svg">
   <img src="assets/branding/solidinserts-logo.svg" width="390" alt="SolidInserts">
 </picture>
 
-# SolidInserts
+[English](README.md) · **Italiano** · [Español](docs/readme/es.md) · [Français](docs/readme/fr.md) · [Deutsch](docs/readme/de.md) · [Português (Portugal)](docs/readme/pt.md) · [Русский](docs/readme/ru.md) · [简体中文](docs/readme/zh-CN.md) · [தமிழ்](docs/readme/ta.md)
 
-[English](README.md)
+Crea sedi per inserti filettati a caldo partendo da fori esistenti in SolidCraft Desktop.
 
-SolidInserts è un plugin per [SolidCraft](https://github.com/tangency-labs/solidcraft) desktop che ricava sedi per inserti filettati a caldo partendo da fori esistenti. Seleziona i bordi circolari, scegli serie e filettatura, poi applica tutti i tagli insieme. Schizzi e tagli restano modificabili nella cronologia di SolidCraft e un solo **Annulla** ritira l’intera operazione.
+SolidInserts usa il bordo circolare del foro per posizionare la sede. Scegli una serie CNC Kitchen e la misura della vite, poi ricava più sedi in una sola operazione. Schizzi e tagli restano modificabili nella cronologia di SolidCraft. Basta un **Annulla** per ritirare tutti i tagli.
 
-![Anteprima di una sede Ø4 mm profonda 6,7 mm in SolidCraft](assets/screenshots/insert-seat-preview.png)
+## Prova SolidInserts
 
-*Anteprima nella versione 0.41.0 di SolidCraft con la [patch desktop facoltativa](docs/desktop-preview.md).*
-
-## Installazione e primo provino
-
-1. Per [SolidCraft desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0), scarica lo ZIP del plugin dalle [release](../../releases) quando disponibile, oppure [compilalo in locale](#compilazione-e-test).
-2. Estrai lo ZIP nella cartella dei plugin di SolidCraft. I file `plugin.json` e `plugin.wasm` devono trovarsi insieme in `plugins/solidinserts/`.
+1. Usa [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Compila il plugin con i comandi riportati sotto per generare `dist/solidinserts-<versione>.zip`.
+2. Estrai lo ZIP nella cartella dei plugin del tuo sistema. Tieni `plugin.json` e `plugin.wasm` insieme nella sottocartella `solidinserts`.
 
    | Sistema | Cartella dei plugin |
    | --- | --- |
@@ -24,40 +22,41 @@ SolidInserts è un plugin per [SolidCraft](https://github.com/tangency-labs/soli
    | Windows | `%LOCALAPPDATA%\SolidCraft\plugins\` |
    | macOS | `~/Library/Application Support/SolidCraft/plugins/` |
 
-3. Avvia SolidCraft e apri il [provino con fori Ø3 e Ø4 mm](examples/provino-fori-pilota.sc).
-4. In SolidCraft standard seleziona i bordi circolari dal lato d’ingresso degli inserti, poi apri **Plugin → Sedi per inserti**, imposta i parametri e premi **Run**. SolidCraft chiede di approvare il pacchetto. Il [provino finito](examples/provino-sedi-inserti.sc) mostra i tagli nella cronologia.
+3. Apri il [provino con fori Ø3 e Ø4 mm](examples/pilot-holes.sc). Seleziona i bordi circolari dal lato in cui entreranno gli inserti. Apri **Plugin → Sedi per inserti**, imposta serie e filettatura, poi premi **Run** e approva il pacchetto quando SolidCraft te lo chiede. Il [provino finito](examples/insert-seats.sc) mostra i tagli ottenuti.
 
-Il flusso con SolidCraft standard è stato verificato su Linux. Il kit per l’anteprima aggiunge **Seleziona i fori → Seleziona** sopra la serie dell’inserto, un’anteprima di taglio che segue il tema e il pannello in tutte le 36 lingue di SolidCraft. Vedi le [istruzioni per la build desktop](docs/desktop-preview.md).
+## Guarda l’anteprima prima di applicare i tagli
 
-## Catalogo e misure
+La patch desktop facoltativa permette di selezionare i fori dal pannello, vedere il materiale da rimuovere e leggere diametro e profondità della sede prima di applicare i tagli. Il pannello segue le 36 opzioni di lingua di SolidCraft 0.41.0. [Compila e usa la versione desktop con la patch](docs/desktop-preview.md#istruzioni-in-italiano).
 
-| Serie CNC Kitchen | Filettature disponibili | Esempio di sede M3 (diametro × profondità) |
+![Pannello e anteprima della sede con diametro e profondità](assets/screenshots/insert-seat-preview.png)
+
+*Anteprima nella versione desktop con la patch facoltativa.*
+
+## Inserti supportati
+
+| Serie CNC Kitchen | Misure della vite | Sede M3 di esempio (diametro × profondità) |
 | --- | --- | --- |
 | Standard | M2, M2,5, M3, M4, M5, M6, M8, M10 | Ø4 × 6,7 mm |
 | Short Version | M3, M4, M5 | Ø4 × 4 mm |
 | VORON M3 × 5 × 4 | M3 | Ø4,4 × 5 mm |
 
-**Automatica (Ø nominale)** cerca una filettatura con diametro nominale entro ±0,05 mm da quello del bordo. Un foro Ø3 mm corrisponde a M3. Per i fori di gioco o di premaschiatura scegli la misura manualmente: per un foro di gioco Ø3,2 mm per una vite M3, scegli M3. La serie vale per tutta la selezione; in modalità automatica la filettatura può variare da foro a foro.
+Il rilevamento automatico cerca una filettatura con diametro nominale entro ±0,05 mm dal diametro del foro. Per i fori di gioco o di premaschiatura scegli la misura manualmente. Per esempio, scegli M3 per un foro di gioco Ø3,2 mm per vite M3. La serie vale per tutta la selezione. In modalità automatica la misura può cambiare da foro a foro.
 
-La sede è profonda quanto la lunghezza dell’inserto più 1 mm. La compensazione parte da zero e modifica solo il diametro. Il plugin lavora su fori cilindrici con imbocco su una faccia piana, controlla la parete attorno alla sede e la profondità disponibile e sui passanti conserva un tratto del foro originale. Stampa un provino per tarare la sede su materiale, stampante e orientamento. Vedi la [scheda dimensionale](https://cnckitchen.com/s/CNCKitchen_Heat-Set-Insert-Dimensions-and-Design-Guidelines.pdf) e le [indicazioni di montaggio](https://cnckitchen.com/blog/tips-and-tricks-for-heat-set-inserts) di CNC Kitchen.
+SolidInserts accetta fori cilindrici con imbocco circolare su una faccia piana. Controlla il materiale circostante e la profondità disponibile. Nei fori passanti conserva un tratto del foro originale. La sede è profonda quanto l’inserto più 1 mm. La compensazione parte da zero e modifica solo il diametro. Stampa un provino per tarare l’accoppiamento. [Quote e indicazioni di progettazione CNC Kitchen](https://cnckitchen.com/s/CNCKitchen_Heat-Set-Insert-Dimensions-and-Design-Guidelines.pdf).
 
-## Compilazione e test
+## Compila e verifica
 
-Servono Rust con Cargo, Bash, Python 3 e [wasm-tools](https://github.com/bytecodealliance/wasm-tools).
+Servono Rust con Cargo, Bash, Python 3 e [wasm-tools](https://github.com/bytecodealliance/wasm-tools). Esegui i comandi dalla radice del repository. La compilazione genera lo ZIP del plugin e il suo checksum SHA-256. Esegui poi `./package-preview-kit.sh` per creare anche il kit con patch desktop, illustrazioni e guida.
 
 ```sh
 rustup target add wasm32-unknown-unknown
 cargo test --locked
 ./build.sh
-python3 tests/solidcraft.py --cli /percorso/di/solidcraft-cli
+python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-La build valida il componente WebAssembly e scrive in `dist/` il pacchetto, lo ZIP con versione e il suo checksum SHA-256. Dopo `./build.sh`, esegui `./package-preview-kit.sh` per raggruppare lo ZIP del plugin con la patch desktop, le illustrazioni e le istruzioni di compilazione locale. I test di integrazione usano la CLI di SolidCraft 0.41.0 per verificare quote, tagli e annullamento con il runtime effettivo.
-
-Il plugin usa il [runtime sperimentale `craft:plugin@0.1.0`](https://github.com/tangency-labs/solidcraft/blob/v0.41.0/docs/plugin-runtime.md) con `commands@0.1`. Negli script CLI o MCP, esegui l’entry `applica` via `plugin.run` con `solo_quote: true` per ottenere le quote senza modificare il modello.
-
-SolidInserts è un plugin indipendente. Vedi le [attribuzioni](NOTICE.md).
+Il test di integrazione usa la CLI di SolidCraft 0.41.0. Negli script CLI o MCP puoi chiamare `applica` tramite `plugin.run` con `solo_quote: true` per ottenere le quote senza modificare il modello. SolidInserts usa il [runtime dei plugin di SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.41.0/docs/plugin-runtime.md).
 
 ## Licenza e supporto
 
-[MIT](LICENSE). Se SolidInserts ti è utile, puoi [sostenerne lo sviluppo su Ko-fi](https://ko-fi.com/enderk).
+SolidInserts è un plugin indipendente distribuito con [licenza MIT](LICENSE). [Attribuzioni](NOTICE.md) · [Sostieni lo sviluppo su Ko-fi](https://ko-fi.com/enderk).

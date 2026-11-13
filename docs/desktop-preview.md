@@ -17,7 +17,7 @@ The full SolidInserts panel runs on a locally patched SolidCraft 0.41.0 desktop 
    ```
 
 3. Install the plugin ZIP included in the kit, or build it with `./build.sh` from this repository. Follow the [README](../README.md) to install it. Launch the app you just built from `target/release/` (on Windows, `target\release\solidcraft.exe`).
-4. Open the sample `examples/provino-fori-pilota.sc`. In **Plugin → Insert seats**, press **Select** beside **Select the holes** and click a circular hole rim. Use **Ctrl+click** to add or remove holes. Choose the series and thread, check the preview and press **Run**.
+4. Open the sample `examples/pilot-holes.sc`. In **Plugin → Insert seats**, press **Select** beside **Select the holes** and click a circular hole rim. Use **Ctrl+click** to add or remove holes. Choose the series and thread, check the preview and press **Run**.
 
 The standalone plugin ZIP also works in stock SolidCraft 0.41.0. Select the rims before opening the plugin there. The themed preview and 36-language panel are provided by the desktop patch. Some technical messages from the WebAssembly module use English when a translation is unavailable.
 
@@ -30,6 +30,6 @@ Lo ZIP del plugin funziona con SolidCraft 0.41.0 standard. La patch aggiunge il 
 1. Scarica i [sorgenti di SolidCraft v0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0) e segui i prerequisiti di compilazione in `CONTRIBUTING.md`.
 2. Dalla radice dei sorgenti esegui i comandi sopra, impostando `KIT` sul percorso assoluto del kit estratto o della copia di SolidInserts.
 3. Installa lo ZIP del plugin seguendo il [README italiano](../README.it.md), poi esegui l’app appena compilata in `target/release/`.
-4. Apri il [provino](../examples/provino-fori-pilota.sc) e vai in **Plugin → Sedi per inserti**. Premi **Seleziona**, poi fai clic sull’imbocco; **Ctrl+clic** aggiunge o rimuove fori. Con **Fine selezione** conservi l’anteprima; con **Esegui** applichi i tagli.
+4. Apri il [provino](../examples/pilot-holes.sc) e vai in **Plugin → Sedi per inserti**. Premi **Seleziona**, poi fai clic sull’imbocco; **Ctrl+clic** aggiunge o rimuove fori. Con **Fine selezione** conservi l’anteprima; con **Esegui** applichi i tagli.
 
 Su Linux, per usare un profilo temporaneo, copia il binario compilato in `dist/anteprima-linux/solidcraft-select-run` nella copia di SolidInserts, poi esegui `./build.sh` e `./prova-select-holes.sh` da lì.
