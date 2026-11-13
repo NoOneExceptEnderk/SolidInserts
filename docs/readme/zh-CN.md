@@ -34,6 +34,8 @@ SolidInserts 使用孔口的圆形边缘定位安装孔。选择 CNC Kitchen 嵌
 
 ## 支持的嵌件
 
+SolidInserts 是一款独立插件，与 CNC Kitchen 无关联。所列嵌件的安装孔尺寸依据 CNC Kitchen 发布的尺寸表。
+
 | CNC Kitchen 系列 | 螺钉规格 | M3 安装孔示例（直径 × 深度） |
 | --- | --- | --- |
 | Standard | M2、M2.5、M3、M4、M5、M6、M8、M10 | Ø4 × 6.7 mm |

@@ -34,6 +34,8 @@ Mit dem optionalen Desktop-Patch kannst du Bohrungen im Bedienfeld auswählen, d
 
 ## Unterstützte Gewindeeinsätze
 
+SolidInserts ist ein unabhängiges Plugin und steht in keiner Verbindung zu CNC Kitchen. Die Abmessungen der Aufnahmen für die aufgeführten Gewindeeinsätze basieren auf dem von CNC Kitchen veröffentlichten Maßblatt.
+
 | CNC-Kitchen-Serie | Schraubengrößen | Beispiel M3 (Durchmesser × Tiefe) |
 | --- | --- | --- |
 | Standard | M2, M2,5, M3, M4, M5, M6, M8, M10 | Ø4 × 6,7 mm |

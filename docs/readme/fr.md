@@ -34,6 +34,8 @@ Le correctif de bureau facultatif permet de sélectionner les trous depuis le pa
 
 ## Inserts pris en charge
 
+SolidInserts est une extension indépendante, sans affiliation avec CNC Kitchen. Les dimensions des logements pour les inserts indiqués sont basées sur la fiche dimensionnelle publiée par CNC Kitchen.
+
 | Série CNC Kitchen | Tailles de vis | Exemple M3 (diamètre × profondeur) |
 | --- | --- | --- |
 | Standard | M2, M2,5, M3, M4, M5, M6, M8, M10 | Ø4 × 6,7 mm |

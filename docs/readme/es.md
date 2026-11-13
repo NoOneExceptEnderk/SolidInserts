@@ -34,6 +34,8 @@ El parche de escritorio opcional permite seleccionar orificios desde el panel, v
 
 ## Insertos compatibles
 
+SolidInserts es un complemento independiente sin afiliación con CNC Kitchen. Las cotas de los alojamientos para los insertos indicados se basan en la ficha dimensional publicada por CNC Kitchen.
+
 | Serie de CNC Kitchen | Medidas de tornillo | Ejemplo M3 (diámetro × profundidad) |
 | --- | --- | --- |
 | Standard | M2, M2,5, M3, M4, M5, M6, M8, M10 | Ø4 × 6,7 mm |

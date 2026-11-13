@@ -34,6 +34,8 @@ A alteração opcional à aplicação de computador permite selecionar os furos 
 
 ## Insertos compatíveis
 
+O SolidInserts é um módulo independente, sem afiliação à CNC Kitchen. As dimensões dos alojamentos para os insertos indicados baseiam-se na ficha dimensional publicada pela CNC Kitchen.
+
 | Série CNC Kitchen | Medidas do parafuso | Exemplo M3 (diâmetro × profundidade) |
 | --- | --- | --- |
 | Standard | M2, M2,5, M3, M4, M5, M6, M8, M10 | Ø4 × 6,7 mm |

@@ -34,6 +34,8 @@ The optional desktop patch lets you select holes from inside the panel, see the 
 
 ## Supported inserts
 
+SolidInserts is an independent plugin with no affiliation with CNC Kitchen. The seat dimensions for the listed inserts are based on the dimension sheet published by CNC Kitchen.
+
 | CNC Kitchen series | Screw sizes | M3 seat example (diameter × depth) |
 | --- | --- | --- |
 | Standard | M2, M2.5, M3, M4, M5, M6, M8, M10 | Ø4 × 6.7 mm |

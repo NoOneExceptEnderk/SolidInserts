@@ -34,6 +34,8 @@ La patch desktop facoltativa permette di selezionare i fori dal pannello, vedere
 
 ## Inserti supportati
 
+SolidInserts è un plugin indipendente, senza affiliazione con CNC Kitchen. Le quote delle sedi per gli inserti indicati si basano sulla scheda dimensionale pubblicata da CNC Kitchen.
+
 | Serie CNC Kitchen | Misure della vite | Sede M3 di esempio (diametro × profondità) |
 | --- | --- | --- |
 | Standard | M2, M2,5, M3, M4, M5, M6, M8, M10 | Ø4 × 6,7 mm |
