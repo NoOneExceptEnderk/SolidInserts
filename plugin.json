@@ -1,0 +1,64 @@
+{
+  "id": "solidinserts",
+  "name": "SolidInserts",
+  "version": "0.6.0",
+  "description": "Crea sedi per inserti filettati a caldo sui bordi circolari dei fori.",
+  "capabilities": ["commands@0.1"],
+  "runtime": {
+    "module": "plugin.wasm",
+    "entries": [
+      {
+        "name": "applica",
+        "effect": "edit",
+        "slots": [{"kind": "menu", "name": "Sedi per inserti"}],
+        "input_schema": {
+          "type": "object",
+          "x-solidinserts-select-holes": 2,
+          "x-solidinserts-locale": true,
+          "required": ["serie", "filettatura"],
+          "properties": {
+            "serie": {
+              "type": "string",
+              "title": "Serie CNC Kitchen",
+              "description": "Short Version per M3, M4 e M5. VORON M3 × 5 × 4 per M3.",
+              "enum": ["Standard", "Short Version", "VORON M3 × 5 × 4"],
+              "default": "Standard"
+            },
+            "filettatura": {
+              "type": "string",
+              "title": "Filettatura della vite",
+              "description": "Automatica riconosce il diametro nominale del foro entro ±0,05 mm. Per i fori di gioco scegli la misura della vite.",
+              "enum": ["Automatica (Ø nominale)", "M2 × 0,40", "M2,5 × 0,45", "M3 × 0,50", "M4 × 0,70", "M5 × 0,80", "M6 × 1,00", "M8 × 1,25", "M10 × 1,50"],
+              "default": "Automatica (Ø nominale)"
+            },
+            "compensazione_mm": {
+              "type": "number",
+              "title": "Compensazione del diametro",
+              "description": "Correzione sul diametro CAD della sede. Usa 0 per la quota di scheda.",
+              "unit": "mm",
+              "default": 0,
+              "minimum": -1,
+              "maximum": 1,
+              "multipleOf": 0.01
+            }
+          }
+        }
+      }
+    ],
+    "commands": [
+      "document.inspect",
+      "model.edges",
+      "model.faces",
+      "inspect.measure",
+      "sketch.create",
+      "sketch.project",
+      "sketch.inspect",
+      "sketch.circle.center",
+      "sketch.dimension",
+      "sketch.finish",
+      "solid.extrude",
+      "select.clear"
+    ],
+    "limits": {"fuel": 100000000, "memory_mib": 64, "deadline_ms": 30000}
+  }
+}
