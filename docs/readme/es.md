@@ -13,7 +13,7 @@ SolidInserts sitúa cada alojamiento a partir del borde circular del orificio. E
 
 ## Prueba SolidInserts
 
-1. Usa [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Descarga el ZIP del complemento desde [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases) cuando esté disponible. También puedes compilarlo con los comandos de abajo para generar `dist/solidinserts-<versión>.zip`.
+1. Usa [SolidCraft Desktop 0.42.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.42.0). Descarga el ZIP del complemento desde [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases) cuando esté disponible. También puedes compilarlo con los comandos de abajo para generar `dist/solidinserts-<versión>.zip`.
 2. Descomprime el ZIP en la carpeta de complementos de tu sistema. Mantén `plugin.json` y `plugin.wasm` juntos dentro de la subcarpeta `solidinserts`.
 
    | Sistema | Carpeta de complementos |
@@ -22,11 +22,11 @@ SolidInserts sitúa cada alojamiento a partir del borde circular del orificio. E
    | Windows | `%LOCALAPPDATA%\SolidCraft\plugins\` |
    | macOS | `~/Library/Application Support/SolidCraft/plugins/` |
 
-3. Abre la [probeta con orificios de Ø3 y Ø4 mm](../../examples/pilot-holes.sc). Selecciona los bordes circulares por el lado de entrada de los insertos. Abre **Plugin → Sedi per inserti**, elige la serie y la rosca, pulsa **Run** y aprueba el paquete cuando SolidCraft te lo pida. La [probeta terminada](../../examples/insert-seats.sc) muestra el resultado.
+3. Abre la [probeta con orificios de Ø3 y Ø4 mm](../../examples/pilot-holes.sc). Selecciona los bordes circulares por el lado de entrada de los insertos. Abre **Plugin → Insert Seats**, elige la serie y la rosca, pulsa **Run** y aprueba el paquete cuando SolidCraft te lo pida. La [probeta terminada](../../examples/insert-seats.sc) muestra el resultado.
 
 ## Vista previa del corte
 
-El parche de escritorio opcional permite seleccionar orificios desde el panel, ver el material que se eliminará y consultar el diámetro y la profundidad antes de aplicar los cortes. El panel sigue las 36 opciones de idioma de SolidCraft 0.41.0. [Guía para compilar y usar el parche](../../docs/desktop-preview.md).
+El parche de escritorio opcional permite seleccionar orificios desde el panel, ver el material que se eliminará y consultar el diámetro y la profundidad antes de aplicar los cortes. El panel sigue las 36 opciones de idioma de SolidCraft 0.42.0. [Guía para compilar y usar el parche](../../docs/desktop-preview.md).
 
 ![Panel con la vista previa y las cotas del alojamiento](../../assets/screenshots/insert-seat-preview.png)
 
@@ -57,7 +57,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-La prueba de integración usa la CLI de SolidCraft 0.41.0. Desde scripts de CLI o MCP, llama a `applica` mediante `plugin.run` con `solo_quote: true` para obtener las cotas sin modificar el modelo. SolidInserts usa el [entorno de ejecución de complementos de SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.41.0/docs/plugin-runtime.md).
+La prueba de integración usa la CLI de SolidCraft 0.42.0. Desde scripts de CLI o MCP, llama a `applica` mediante `plugin.run` con `solo_quote: true` para obtener las cotas sin modificar el modelo. SolidInserts usa el [entorno de ejecución de complementos de SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.42.0/docs/plugin-runtime.md).
 
 ## Licencia y apoyo
 

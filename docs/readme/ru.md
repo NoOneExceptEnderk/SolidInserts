@@ -13,7 +13,7 @@ SolidInserts привязывает каждое посадочное место
 
 ## Как попробовать SolidInserts
 
-1. Используйте [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Скачайте ZIP плагина из раздела [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases), когда он станет доступен. Плагин также можно собрать командами ниже. Результат появится в `dist/solidinserts-<version>.zip`.
+1. Используйте [SolidCraft Desktop 0.42.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.42.0). Скачайте ZIP плагина из раздела [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases), когда он станет доступен. Плагин также можно собрать командами ниже. Результат появится в `dist/solidinserts-<version>.zip`.
 2. Распакуйте ZIP в каталог плагинов своей системы. Файлы `plugin.json` и `plugin.wasm` должны находиться вместе в подкаталоге `solidinserts`.
 
    | Система | Каталог плагинов |
@@ -22,11 +22,11 @@ SolidInserts привязывает каждое посадочное место
    | Windows | `%LOCALAPPDATA%\SolidCraft\plugins\` |
    | macOS | `~/Library/Application Support/SolidCraft/plugins/` |
 
-3. Откройте [образец с отверстиями Ø3 и Ø4 мм](../../examples/pilot-holes.sc). Выберите круглые кромки с той стороны, с которой будут установлены вставки. Откройте **Plugin → Sedi per inserti**, выберите серию и размер резьбы, нажмите **Run** и подтвердите запуск пакета по запросу SolidCraft. Результат можно посмотреть в [готовом образце](../../examples/insert-seats.sc).
+3. Откройте [образец с отверстиями Ø3 и Ø4 мм](../../examples/pilot-holes.sc). Выберите круглые кромки с той стороны, с которой будут установлены вставки. Откройте **Plugin → Insert Seats**, выберите серию и размер резьбы, нажмите **Run** и подтвердите запуск пакета по запросу SolidCraft. Результат можно посмотреть в [готовом образце](../../examples/insert-seats.sc).
 
 ## Предварительный просмотр вырезов
 
-Дополнительный патч настольного приложения позволяет выбирать отверстия прямо из панели, видеть удаляемый материал и проверять диаметр и глубину до выполнения вырезов. Панель поддерживает 36 языковых настроек SolidCraft 0.41.0. [Сборка и использование версии с патчем](../../docs/desktop-preview.md).
+Дополнительный патч настольного приложения позволяет выбирать отверстия прямо из панели, видеть удаляемый материал и проверять диаметр и глубину до выполнения вырезов. Панель поддерживает 36 языковых настроек SolidCraft 0.42.0. [Сборка и использование версии с патчем](../../docs/desktop-preview.md).
 
 ![Панель с просмотром посадочного места и его размеров](../../assets/screenshots/insert-seat-preview.png)
 
@@ -57,7 +57,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-Интеграционный тест использует CLI SolidCraft 0.41.0. Из скриптов CLI или MCP вызовите `applica` через `plugin.run` с параметром `solo_quote: true`, чтобы получить размеры без изменения модели. SolidInserts использует [среду выполнения плагинов SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.41.0/docs/plugin-runtime.md).
+Интеграционный тест использует CLI SolidCraft 0.42.0. Из скриптов CLI или MCP вызовите `applica` через `plugin.run` с параметром `solo_quote: true`, чтобы получить размеры без изменения модели. SolidInserts использует [среду выполнения плагинов SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.42.0/docs/plugin-runtime.md).
 
 ## Лицензия и поддержка
 

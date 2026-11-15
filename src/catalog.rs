@@ -21,7 +21,8 @@ impl Series {
     }
 }
 
-pub const AUTO: &str = "Automatica (Ø nominale)";
+pub const AUTO: &str = "Automatic (nominal Ø)";
+const LEGACY_AUTO: &str = "Automatica (Ø nominale)";
 const AUTO_TOLERANCE_MM: f64 = 0.05;
 
 struct Thread {
@@ -87,7 +88,7 @@ pub fn choose(
     pilot_mm: f64,
     lang: Language,
 ) -> Result<Insert, String> {
-    let thread = if thread == AUTO {
+    let thread = if matches!(thread, AUTO | LEGACY_AUTO) {
         THREADS
             .iter()
             .find(|size| (size.nominal - pilot_mm).abs() <= AUTO_TOLERANCE_MM + 1e-8)
@@ -196,7 +197,10 @@ mod tests {
         };
         assert_eq!(
             apply["slots"],
-            serde_json::json!([{"kind": "menu", "name": "Sedi per inserti"}])
+            serde_json::json!([
+                {"kind": "menu", "name": "Insert Seats"},
+                {"kind": "ribbon", "name": "Insert Seats"}
+            ])
         );
         assert_eq!(apply["name"], "applica");
         assert_eq!(apply["effect"], "edit");

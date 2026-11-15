@@ -1,4 +1,4 @@
-"""Run the built component through SolidCraft 0.41.0, with no desktop or user files."""
+"""Run the built component with the SolidCraft CLI, without desktop or user files."""
 
 import argparse
 import json
@@ -88,7 +88,9 @@ def run_tests(cad):
         design=pilot,
         expect_error="Foro Ø4 → M4 × 0,70 · sede Ø5,7 × 9,1 mm",
     )
-    _, before_quote, quoted, after_quote = cad.run([select_both, inspect, cad.plugin(solo_quote=True), inspect], design=pilot)
+    _, before_quote, quoted, after_quote = cad.run([
+        select_both, inspect, cad.plugin(solo_quote=True, filettatura="Automatic (nominal Ø)"), inspect,
+    ], design=pilot)
     assert after_quote["selection"] == before_quote["selection"]
     assert after_quote["timeline"] == before_quote["timeline"] and after_quote["undo"] == before_quote["undo"] == 0
     proposed = quoted["result"]["sedi"]
@@ -132,12 +134,12 @@ def run_tests(cad):
     assert doc_before["selection"] == doc_after["selection"]
     assert doc_before["timeline"] == doc_after["timeline"] and doc_after["undo"] == 0
     cad.run(
-        [select_both, cad.plugin(hole_picks=[])], design=pilot, expect_error="Seleziona il bordo"
+        [select_both, cad.plugin(hole_picks=[])], design=pilot, expect_error="Select the circular rim"
     )
     cad.run(
         [cad.plugin(hole_picks=[picks[0], explicit_pick("F1:+z|F4:side")])],
         design=pilot,
-        expect_error="imbocco",
+        expect_error="select a circular rim",
     )
     for locale, message in [
         ("it", "Seleziona il bordo circolare"),
@@ -145,7 +147,9 @@ def run_tests(cad):
         ("ja", "Select the circular rim"),
     ]:
         cad.run([cad.plugin(hole_picks=[], locale=locale)], design=pilot, expect_error=message)
-    localized, = cad.run([cad.plugin(hole_picks=picks, locale="fr", solo_quote=True)], design=pilot)
+    localized, = cad.run([
+        cad.plugin(hole_picks=picks, locale="fr", solo_quote=True, filettatura="Automatica (Ø nominale)")
+    ], design=pilot)
     assert localized["result"]["sedi"] == proposed
     print("PASS locale changes diagnostics, with English fallback, and preserves seat dimensions")
     assert applied["result"]["applicate"] == 2
@@ -175,8 +179,8 @@ def run_tests(cad):
     assert voron["inserto"] == "VORON M3 × 5 × 4"
     assert (voron["diametro_sede_mm"], voron["profondita_sede_mm"]) == (4.55, 5.0)
     for bad_pick, settings, expected in [
-        ("F1:+z|F4:side", {}, "imbocco"),
-        (m4, {"serie": "Voron"}, "non è disponibile"),
+        ("F1:+z|F4:side", {}, "select a circular rim"),
+        (m4, {"serie": "Voron"}, "is not available"),
     ]:
         cad.run([cad.pick(rims, bad_pick), cad.plugin(**settings)], design=pilot, expect_error=expected)
     print("PASS Voron dimensions, compensation, convex boss and unavailable sizes")

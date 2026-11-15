@@ -7,13 +7,15 @@
 
 **English** · [Italiano](README.it.md) · [Español](docs/readme/es.md) · [Français](docs/readme/fr.md) · [Deutsch](docs/readme/de.md) · [Português (Portugal)](docs/readme/pt.md) · [Русский](docs/readme/ru.md) · [简体中文](docs/readme/zh-CN.md) · [தமிழ்](docs/readme/ta.md)
 
+[User guide](docs/user-guide.md)
+
 Create seats for heat-set threaded inserts in existing holes with SolidCraft Desktop.
 
 SolidInserts uses the circular edge of each hole to locate the seat. Choose a CNC Kitchen insert series and a screw size, then cut several seats in one operation. The sketches and cuts stay editable in the SolidCraft timeline. One undo removes the whole batch.
 
 ## Try SolidInserts
 
-1. Use [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Get the plugin ZIP from [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases) when available. You can also build it with the commands below to produce `dist/solidinserts-<version>.zip`.
+1. Use [SolidCraft Desktop 0.42.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.42.0). Get the plugin ZIP from [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases) when available. You can also build it with the commands below to produce `dist/solidinserts-<version>.zip`.
 2. Extract the ZIP into the plugins folder for your system. Keep `plugin.json` and `plugin.wasm` together in the `solidinserts` subfolder.
 
    | OS | Plugins folder |
@@ -22,11 +24,11 @@ SolidInserts uses the circular edge of each hole to locate the seat. Choose a CN
    | Windows | `%LOCALAPPDATA%\SolidCraft\plugins\` |
    | macOS | `~/Library/Application Support/SolidCraft/plugins/` |
 
-3. Open the [sample plate with Ø3 and Ø4 mm holes](examples/pilot-holes.sc). Select the circular rims on the side where the inserts go. Open **Plugin → Sedi per inserti**, choose the series and thread size, then press **Run** and approve the package when SolidCraft prompts you. The [finished sample](examples/insert-seats.sc) shows the resulting cuts.
+3. Open the [sample plate with Ø3 and Ø4 mm holes](examples/pilot-holes.sc). Select the circular rims on the side where the inserts go. In the ribbon, open **Model → Plugins → Insert Seats**, or use the **Plugins** menu. Choose the series and thread size, then press **Run** and approve the package when SolidCraft prompts you. The [finished sample](examples/insert-seats.sc) shows the resulting cuts.
 
 ## Preview the cuts before applying them
 
-The optional desktop patch lets you select holes from inside the panel, see the material to be removed and read the seat diameter and depth before applying the cuts. The patched panel follows the 36 language options in SolidCraft 0.41.0. [Build and use the patched desktop app](docs/desktop-preview.md).
+The optional desktop patch for SolidCraft 0.42.0 opens a compact panel from the ribbon and Plugins menu. Select holes from the panel, preview the material to remove in 3D and read the seat diameter and depth before applying the cuts. [Build and use the patched desktop app](docs/desktop-preview.md).
 
 ![Plugin view showing the seat diameter and depth](assets/screenshots/insert-seat-preview.png)
 
@@ -57,7 +59,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-The integration test uses the SolidCraft 0.41.0 CLI. For CLI or MCP scripts, call `applica` through `plugin.run` with `solo_quote: true` to get the dimensions without editing the model. SolidInserts uses the [SolidCraft plugin runtime](https://github.com/tangency-labs/solidcraft/blob/v0.41.0/docs/plugin-runtime.md).
+The integration test works with the SolidCraft 0.41.0 and 0.42.0 CLIs. For CLI or MCP scripts, call `applica` through `plugin.run` with `solo_quote: true` to get the dimensions without editing the model. SolidInserts uses the [SolidCraft plugin runtime](https://github.com/tangency-labs/solidcraft/blob/v0.42.0/docs/plugin-runtime.md).
 
 ## License and support
 

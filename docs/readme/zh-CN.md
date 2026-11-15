@@ -13,7 +13,7 @@ SolidInserts 使用孔口的圆形边缘定位安装孔。选择 CNC Kitchen 嵌
 
 ## 试用 SolidInserts
 
-1. 使用 [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0)。插件 ZIP 发布后可从[发行版页面](https://github.com/NoOneExceptEnderk/SolidInserts/releases)下载。也可以使用下方命令编译插件，生成 `dist/solidinserts-<version>.zip`。
+1. 使用 [SolidCraft Desktop 0.42.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.42.0)。插件 ZIP 发布后可从[发行版页面](https://github.com/NoOneExceptEnderk/SolidInserts/releases)下载。也可以使用下方命令编译插件，生成 `dist/solidinserts-<version>.zip`。
 2. 将 ZIP 解压到系统对应的插件目录。`plugin.json` 和 `plugin.wasm` 应放在同一个 `solidinserts` 子目录中。
 
    | 系统 | 插件目录 |
@@ -22,11 +22,11 @@ SolidInserts 使用孔口的圆形边缘定位安装孔。选择 CNC Kitchen 嵌
    | Windows | `%LOCALAPPDATA%\SolidCraft\plugins\` |
    | macOS | `~/Library/Application Support/SolidCraft/plugins/` |
 
-3. 打开[带 Ø3 和 Ø4 毫米孔的示例试件](../../examples/pilot-holes.sc)。选择嵌件装入一侧的孔口圆边。打开 **Plugin → Sedi per inserti**，选择系列和螺纹规格，点击 **Run**，再按 SolidCraft 的提示批准运行插件包。[加工后的试件](../../examples/insert-seats.sc)展示了切除结果。
+3. 打开[带 Ø3 和 Ø4 毫米孔的示例试件](../../examples/pilot-holes.sc)。选择嵌件装入一侧的孔口圆边。打开 **Plugin → Insert Seats**，选择系列和螺纹规格，点击 **Run**，再按 SolidCraft 的提示批准运行插件包。[加工后的试件](../../examples/insert-seats.sc)展示了切除结果。
 
 ## 切除前预览
 
-可选的桌面补丁允许从面板内选择孔，预览将要移除的材料，并在切除前查看安装孔的直径和深度。面板支持 SolidCraft 0.41.0 的 36 种语言选项。[编译和使用带补丁的桌面版](../../docs/desktop-preview.md)。
+可选的桌面补丁允许从面板内选择孔，预览将要移除的材料，并在切除前查看安装孔的直径和深度。面板支持 SolidCraft 0.42.0 的 36 种语言选项。[编译和使用带补丁的桌面版](../../docs/desktop-preview.md)。
 
 ![面板显示安装孔预览和尺寸](../../assets/screenshots/insert-seat-preview.png)
 
@@ -57,7 +57,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-集成测试使用 SolidCraft 0.41.0 的 CLI。在 CLI 或 MCP 脚本中，可以通过 `plugin.run` 调用 `applica`，并设置 `solo_quote: true`，从而在不修改模型的情况下获取尺寸。SolidInserts 使用 [SolidCraft 插件运行时](https://github.com/tangency-labs/solidcraft/blob/v0.41.0/docs/plugin-runtime.md)。
+集成测试使用 SolidCraft 0.42.0 的 CLI。在 CLI 或 MCP 脚本中，可以通过 `plugin.run` 调用 `applica`，并设置 `solo_quote: true`，从而在不修改模型的情况下获取尺寸。SolidInserts 使用 [SolidCraft 插件运行时](https://github.com/tangency-labs/solidcraft/blob/v0.42.0/docs/plugin-runtime.md)。
 
 ## 许可证与支持
 

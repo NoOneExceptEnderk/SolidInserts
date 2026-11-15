@@ -2,10 +2,10 @@
 set -euo pipefail
 
 workspace="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-binary="$workspace/dist/anteprima-linux/solidcraft-select-run"
+binary="${1:-$workspace/dist/linux-preview/solidcraft-select-run}"
 package="$workspace/dist/solidinserts"
 if [[ ! -x "$binary" || ! -r "$package/plugin.wasm" ]]; then
-    printf '%s\n' "Compila l’app e il plugin seguendo le istruzioni in README.md." >&2
+    printf '%s\n' "Build the app and plugin following docs/desktop-preview.md." >&2
     exit 1
 fi
 
@@ -28,7 +28,7 @@ cat > "$SOLIDCRAFT_SETTINGS_DIR/app.ron" <<'RON'
 RON
 
 # Preserve the pilot. The working copy and any saves to it stay under dist/.
-example="$(mktemp --suffix=.sc "$workspace/dist/provino-select-holes-XXXXXX")"
+example="$(mktemp --suffix=.sc "$workspace/dist/hole-selection-XXXXXX")"
 cp -- "$workspace/examples/pilot-holes.sc" "$example"
-printf 'Provino di lavoro: %s\n' "$example"
+printf 'Working sample: %s\n' "$example"
 "$binary" "$example"

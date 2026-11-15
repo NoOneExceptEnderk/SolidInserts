@@ -13,7 +13,7 @@ SolidInserts positioniert die Aufnahme an der kreisförmigen Bohrungskante. Wäh
 
 ## SolidInserts ausprobieren
 
-1. Verwende [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Lade das Plugin-ZIP aus den [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases) herunter, sobald es verfügbar ist. Du kannst das Plugin auch mit den Befehlen unten erstellen. Dabei entsteht `dist/solidinserts-<Version>.zip`.
+1. Verwende [SolidCraft Desktop 0.42.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.42.0). Lade das Plugin-ZIP aus den [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases) herunter, sobald es verfügbar ist. Du kannst das Plugin auch mit den Befehlen unten erstellen. Dabei entsteht `dist/solidinserts-<Version>.zip`.
 2. Entpacke das ZIP in den Plugin-Ordner deines Systems. Lass `plugin.json` und `plugin.wasm` zusammen im Unterordner `solidinserts`.
 
    | System | Plugin-Ordner |
@@ -22,11 +22,11 @@ SolidInserts positioniert die Aufnahme an der kreisförmigen Bohrungskante. Wäh
    | Windows | `%LOCALAPPDATA%\SolidCraft\plugins\` |
    | macOS | `~/Library/Application Support/SolidCraft/plugins/` |
 
-3. Öffne die [Musterplatte mit Bohrungen von Ø3 und Ø4 mm](../../examples/pilot-holes.sc). Wähle die kreisförmigen Kanten auf der Einsetzseite. Öffne **Plugin → Sedi per inserti**, wähle Serie und Gewinde, klicke auf **Run** und bestätige das Paket, wenn SolidCraft danach fragt. Die [fertige Musterplatte](../../examples/insert-seats.sc) zeigt das Ergebnis.
+3. Öffne die [Musterplatte mit Bohrungen von Ø3 und Ø4 mm](../../examples/pilot-holes.sc). Wähle die kreisförmigen Kanten auf der Einsetzseite. Öffne **Plugin → Insert Seats**, wähle Serie und Gewinde, klicke auf **Run** und bestätige das Paket, wenn SolidCraft danach fragt. Die [fertige Musterplatte](../../examples/insert-seats.sc) zeigt das Ergebnis.
 
 ## Schnitte in der Vorschau prüfen
 
-Mit dem optionalen Desktop-Patch kannst du Bohrungen im Bedienfeld auswählen, das abzutragende Material sehen und Durchmesser und Tiefe vor dem Ausführen ablesen. Das Bedienfeld folgt den 36 Sprachoptionen von SolidCraft 0.41.0. [Anleitung zum Erstellen und Verwenden der angepassten Desktop-Version](../../docs/desktop-preview.md).
+Mit dem optionalen Desktop-Patch kannst du Bohrungen im Bedienfeld auswählen, das abzutragende Material sehen und Durchmesser und Tiefe vor dem Ausführen ablesen. Das Bedienfeld folgt den 36 Sprachoptionen von SolidCraft 0.42.0. [Anleitung zum Erstellen und Verwenden der angepassten Desktop-Version](../../docs/desktop-preview.md).
 
 ![Bedienfeld mit Vorschau, Durchmesser und Tiefe der Aufnahme](../../assets/screenshots/insert-seat-preview.png)
 
@@ -57,7 +57,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-Der Integrationstest benötigt die CLI von SolidCraft 0.41.0. In CLI- oder MCP-Skripten liefert `applica` über `plugin.run` mit `solo_quote: true` die Maße, ohne das Modell zu ändern. SolidInserts nutzt die [Plugin-Laufzeit von SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.41.0/docs/plugin-runtime.md).
+Der Integrationstest benötigt die CLI von SolidCraft 0.42.0. In CLI- oder MCP-Skripten liefert `applica` über `plugin.run` mit `solo_quote: true` die Maße, ohne das Modell zu ändern. SolidInserts nutzt die [Plugin-Laufzeit von SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.42.0/docs/plugin-runtime.md).
 
 ## Lizenz und Unterstützung
 

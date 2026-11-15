@@ -1,5 +1,4 @@
-/// Match SolidCraft's language tags. Direct callers that omit the language keep the
-/// original Italian messages; an unsupported app language uses English.
+/// Match SolidCraft's language tags, with English for missing or unsupported tags.
 #[derive(Clone, Copy)]
 pub(crate) enum Language {
     Italian,
@@ -13,7 +12,7 @@ pub(crate) enum Language {
 impl Language {
     pub(crate) fn from_tag(tag: Option<&str>) -> Self {
         match tag {
-            None | Some("it") => Self::Italian,
+            Some("it") => Self::Italian,
             Some("de") => Self::German,
             Some("es") => Self::Spanish,
             Some("fr") => Self::French,

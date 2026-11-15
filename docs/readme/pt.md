@@ -13,7 +13,7 @@ O SolidInserts posiciona cada alojamento a partir da aresta circular do furo. Es
 
 ## Experimentar o SolidInserts
 
-1. Usa o [SolidCraft Desktop 0.41.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.41.0). Descarrega o ZIP do módulo a partir dos [lançamentos](https://github.com/NoOneExceptEnderk/SolidInserts/releases) quando estiver disponível. Também podes compilar o módulo com os comandos abaixo para obter `dist/solidinserts-<versão>.zip`.
+1. Usa o [SolidCraft Desktop 0.42.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.42.0). Descarrega o ZIP do módulo a partir dos [lançamentos](https://github.com/NoOneExceptEnderk/SolidInserts/releases) quando estiver disponível. Também podes compilar o módulo com os comandos abaixo para obter `dist/solidinserts-<versão>.zip`.
 2. Extrai o ZIP para a pasta de módulos do teu sistema. Mantém `plugin.json` e `plugin.wasm` juntos na subpasta `solidinserts`.
 
    | Sistema | Pasta de módulos |
@@ -22,11 +22,11 @@ O SolidInserts posiciona cada alojamento a partir da aresta circular do furo. Es
    | Windows | `%LOCALAPPDATA%\SolidCraft\plugins\` |
    | macOS | `~/Library/Application Support/SolidCraft/plugins/` |
 
-3. Abre o [provete com furos de Ø3 e Ø4 mm](../../examples/pilot-holes.sc). Seleciona as arestas circulares do lado por onde vão entrar os insertos. Abre **Plugin → Sedi per inserti**, escolhe a série e a rosca, carrega em **Run** e aprova o pacote quando o SolidCraft o pedir. O [provete final](../../examples/insert-seats.sc) mostra o resultado.
+3. Abre o [provete com furos de Ø3 e Ø4 mm](../../examples/pilot-holes.sc). Seleciona as arestas circulares do lado por onde vão entrar os insertos. Abre **Plugin → Insert Seats**, escolhe a série e a rosca, carrega em **Run** e aprova o pacote quando o SolidCraft o pedir. O [provete final](../../examples/insert-seats.sc) mostra o resultado.
 
 ## Pré-visualizar os cortes
 
-A alteração opcional à aplicação de computador permite selecionar os furos a partir do painel, ver o material a remover e confirmar o diâmetro e a profundidade antes de aplicar os cortes. O painel segue as 36 opções de idioma do SolidCraft 0.41.0. [Guia para compilar e usar a aplicação com a alteração](../../docs/desktop-preview.md).
+A alteração opcional à aplicação de computador permite selecionar os furos a partir do painel, ver o material a remover e confirmar o diâmetro e a profundidade antes de aplicar os cortes. O painel segue as 36 opções de idioma do SolidCraft 0.42.0. [Guia para compilar e usar a aplicação com a alteração](../../docs/desktop-preview.md).
 
 ![Painel com pré-visualização e cotas do alojamento](../../assets/screenshots/insert-seat-preview.png)
 
@@ -57,7 +57,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-O teste de integração usa a CLI do SolidCraft 0.41.0. Em scripts CLI ou MCP, chama `applica` através de `plugin.run` com `solo_quote: true` para obter as cotas sem editar o modelo. O SolidInserts usa o [ambiente de execução de módulos do SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.41.0/docs/plugin-runtime.md).
+O teste de integração usa a CLI do SolidCraft 0.42.0. Em scripts CLI ou MCP, chama `applica` através de `plugin.run` com `solo_quote: true` para obter as cotas sem editar o modelo. O SolidInserts usa o [ambiente de execução de módulos do SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.42.0/docs/plugin-runtime.md).
 
 ## Licença e apoio
 
