@@ -209,11 +209,15 @@ def main():
     with tempfile.TemporaryDirectory(prefix="solidinserts-test-") as temporary:
         root = Path(temporary)
         with ZipFile(args.zip) as archive:
+            images = {f"assets/solidinserts/{name}.svg" for name in ("standard", "short", "voron")}
             assert set(archive.namelist()) == {
                 "solidinserts/plugin.json", "solidinserts/plugin.wasm",
                 "solidinserts/LICENSE", "solidinserts/LICENSE-SOLIDCRAFT-WIT",
+                *(f"solidinserts/{image}" for image in images),
             }
             project = Path(__file__).resolve().parents[1]
+            for image in images:
+                assert archive.read(f"solidinserts/{image}") == (project / image).read_bytes()
             assert archive.read("solidinserts/LICENSE") == (project / "LICENSE").read_bytes()
             assert archive.read("solidinserts/LICENSE-SOLIDCRAFT-WIT") == (project / "wit/LICENSE-MIT").read_bytes()
             archive.extractall(root)

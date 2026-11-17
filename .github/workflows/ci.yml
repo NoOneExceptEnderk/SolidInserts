@@ -29,9 +29,8 @@ jobs:
           printf '%s\n' "$RUNNER_TEMP/wasm-tools-1.263.0-x86_64-linux" >> "$GITHUB_PATH"
       - name: Run Rust tests
         run: cargo test --locked
-      - name: Build and verify the plugin ZIP and preview kit
+      - name: Build and verify the plugin ZIP
         run: |
           bash ./build.sh
-          bash ./package-preview-kit.sh
           cd dist
           sha256sum --check solidinserts-*.zip.sha256

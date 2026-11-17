@@ -7,7 +7,7 @@
 
 [English](README.md) · **Italiano** · [Español](docs/readme/es.md) · [Français](docs/readme/fr.md) · [Deutsch](docs/readme/de.md) · [Português (Portugal)](docs/readme/pt.md) · [Русский](docs/readme/ru.md) · [简体中文](docs/readme/zh-CN.md) · [தமிழ்](docs/readme/ta.md)
 
-[Guida utente](docs/user-guide.it.md)
+[Guida utente per la 1.1.0](https://github.com/NoOneExceptEnderk/SolidInserts/blob/v1.1.0/docs/user-guide.it.md)
 
 Crea sedi per inserti filettati a caldo partendo da fori esistenti in SolidCraft Desktop.
 
@@ -15,8 +15,8 @@ SolidInserts usa il bordo circolare del foro per posizionare la sede. Scegli una
 
 ## Prova SolidInserts
 
-1. Usa [SolidCraft Desktop 0.42.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.42.0). Scarica lo ZIP del plugin dai [rilasci](https://github.com/NoOneExceptEnderk/SolidInserts/releases) quando disponibile. Puoi anche compilare il plugin con i comandi riportati sotto per generare `dist/solidinserts-<versione>.zip`.
-2. Estrai lo ZIP nella cartella dei plugin del tuo sistema. Tieni `plugin.json` e `plugin.wasm` insieme nella sottocartella `solidinserts`.
+1. Usa [SolidCraft Desktop 0.44.1](https://github.com/tangency-labs/solidcraft/releases/tag/v0.44.1). Scarica lo ZIP del plugin dai [rilasci](https://github.com/NoOneExceptEnderk/SolidInserts/releases). Puoi anche compilare il plugin con i comandi riportati sotto per generare `dist/solidinserts-<versione>.zip`.
+2. Installa lo ZIP da **File → Plugin…**. Per l’installazione manuale, estrai l’intera cartella `solidinserts`, comprese le risorse, nella cartella dei plugin del tuo sistema.
 
    | Sistema | Cartella dei plugin |
    | --- | --- |
@@ -24,15 +24,11 @@ SolidInserts usa il bordo circolare del foro per posizionare la sede. Scegli una
    | Windows | `%LOCALAPPDATA%\SolidCraft\plugins\` |
    | macOS | `~/Library/Application Support/SolidCraft/plugins/` |
 
-3. Apri il [provino con fori Ø3 e Ø4 mm](examples/pilot-holes.sc). Seleziona i bordi circolari dal lato in cui entreranno gli inserti. Nella barra degli strumenti, apri **Modella → Plugin → Insert Seats**, oppure usa il menu **Plugin**. Imposta serie e filettatura, poi premi **Run** e approva il pacchetto quando SolidCraft te lo chiede. Il [provino finito](examples/insert-seats.sc) mostra i tagli ottenuti.
+3. Apri il [provino con fori Ø3 e Ø4 mm](examples/pilot-holes.sc). Nella barra degli strumenti apri **Modella → Plugin → Insert Seats**. Il campo **Hole rims** è già attivo quando si apre il pannello. Fai clic sui bordi circolari dal lato in cui entreranno gli inserti. Imposta serie e filettatura, controlla l’anteprima e premi **Esegui**. Il [provino finito](examples/insert-seats.sc) mostra i tagli ottenuti.
 
 ## Guarda l’anteprima prima di applicare i tagli
 
-La patch desktop facoltativa per SolidCraft 0.42.0 apre un pannello compatto dalla ribbon e dal menu Plugin. Seleziona i fori dal pannello, visualizza in 3D il materiale da rimuovere e leggi diametro e profondità della sede prima di applicare i tagli. [Compila e usa la versione desktop con la patch](docs/desktop-preview.md#istruzioni-in-italiano).
-
-![Pannello e anteprima della sede con diametro e profondità](assets/screenshots/insert-seat-preview.png)
-
-*Anteprima nella versione desktop con la patch facoltativa.*
+SolidCraft Desktop 0.44.1 ufficiale offre l’anteprima 3D senza patch. L’anteprima si aggiorna quando selezioni i bordi o cambi le impostazioni. **Annulla** chiude il pannello e scarta l’anteprima. **Esegui** applica tutti i tagli in una sola operazione annullabile. La tendina **Type** mostra un’illustrazione per ogni serie.
 
 ## Inserti supportati
 
@@ -50,7 +46,7 @@ SolidInserts accetta fori cilindrici con imbocco circolare su una faccia piana. 
 
 ## Compila e verifica
 
-Servono Rust con Cargo, Bash, Python 3 e [wasm-tools](https://github.com/bytecodealliance/wasm-tools). Esegui i comandi dalla radice del repository. La compilazione genera lo ZIP del plugin e il suo checksum SHA-256. Esegui poi `./package-preview-kit.sh` per creare anche il kit con patch desktop, illustrazioni e guida.
+Servono Rust con Cargo, Bash, Python 3 e [wasm-tools](https://github.com/bytecodealliance/wasm-tools). Esegui i comandi dalla radice del repository. La compilazione genera lo ZIP del plugin e il suo checksum SHA-256.
 
 ```sh
 rustup target add wasm32-unknown-unknown
@@ -59,7 +55,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-Il test di integrazione funziona con le CLI di SolidCraft 0.41.0 e 0.42.0. Negli script CLI o MCP puoi chiamare `applica` tramite `plugin.run` con `solo_quote: true` per ottenere le quote senza modificare il modello. SolidInserts usa il [runtime dei plugin di SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.42.0/docs/plugin-runtime.md).
+Usa la CLI di SolidCraft 0.44.1 per i test di integrazione. Negli script CLI o MCP puoi chiamare `applica` tramite `plugin.run` con `solo_quote: true` per ottenere le quote senza modificare il modello. SolidInserts usa il [runtime dei plugin di SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.44.1/docs/plugin-runtime.md).
 
 ## Licenza e supporto
 

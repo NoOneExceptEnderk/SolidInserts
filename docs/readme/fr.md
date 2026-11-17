@@ -13,8 +13,8 @@ SolidInserts positionne chaque logement à partir de l’arête circulaire du tr
 
 ## Essayer SolidInserts
 
-1. Utilisez [SolidCraft Desktop 0.42.0](https://github.com/tangency-labs/solidcraft/releases/tag/v0.42.0). Téléchargez le ZIP de l’extension depuis les [versions publiées](https://github.com/NoOneExceptEnderk/SolidInserts/releases) lorsqu’il est disponible. Vous pouvez aussi compiler l’extension avec les commandes ci-dessous pour produire `dist/solidinserts-<version>.zip`.
-2. Extrayez le ZIP dans le dossier des extensions de votre système. Laissez `plugin.json` et `plugin.wasm` ensemble dans le sous-dossier `solidinserts`.
+1. Utilisez [SolidCraft Desktop 0.44.1](https://github.com/tangency-labs/solidcraft/releases/tag/v0.44.1). Téléchargez le ZIP de l’extension depuis les [versions publiées](https://github.com/NoOneExceptEnderk/SolidInserts/releases). Vous pouvez aussi compiler l’extension avec les commandes ci-dessous pour produire `dist/solidinserts-<version>.zip`.
+2. Installez le ZIP depuis **Fichier → Plugins…**. Pour une installation manuelle, extrayez le dossier `solidinserts` complet, avec ses ressources, dans le dossier des extensions de votre système.
 
    | Système | Dossier des extensions |
    | --- | --- |
@@ -22,15 +22,11 @@ SolidInserts positionne chaque logement à partir de l’arête circulaire du tr
    | Windows | `%LOCALAPPDATA%\SolidCraft\plugins\` |
    | macOS | `~/Library/Application Support/SolidCraft/plugins/` |
 
-3. Ouvrez l’[éprouvette avec des trous de Ø3 et Ø4 mm](../../examples/pilot-holes.sc). Sélectionnez les arêtes circulaires du côté où les inserts seront posés. Ouvrez **Plugin → Insert Seats**, choisissez la série et le filetage, puis cliquez sur **Run** et approuvez le paquet lorsque SolidCraft vous le demande. L’[éprouvette terminée](../../examples/insert-seats.sc) montre le résultat.
+3. Ouvrez l’[éprouvette avec des trous de Ø3 et Ø4 mm](../../examples/pilot-holes.sc). Ouvrez **Model → Plugins → Insert Seats**. Dans **Hole rims**, sélectionnez les arêtes circulaires du côté où les inserts seront posés. Choisissez la série et le filetage, vérifiez l’aperçu et cliquez sur **Run**. L’[éprouvette terminée](../../examples/insert-seats.sc) montre le résultat.
 
 ## Prévisualiser les enlèvements de matière
 
-Le correctif de bureau facultatif permet de sélectionner les trous depuis le panneau, de voir la matière à retirer et de lire le diamètre et la profondeur avant d’appliquer l’opération. Le panneau suit les 36 options de langue de SolidCraft 0.42.0. [Compiler et utiliser le correctif](../../docs/desktop-preview.md).
-
-![Panneau et aperçu du logement avec ses dimensions](../../assets/screenshots/insert-seat-preview.png)
-
-*Aperçu dans l’application de bureau avec le correctif facultatif.*
+La version officielle de SolidCraft 0.44.1 affiche l’aperçu 3D sans correctif. Il se met à jour lorsque vous sélectionnez des arêtes ou modifiez les réglages. **Cancel** ferme l’aperçu.
 
 ## Inserts pris en charge
 
@@ -48,7 +44,7 @@ SolidInserts accepte les trous cylindriques dont l’entrée circulaire se trouv
 
 ## Compilation et tests
 
-Installez Rust avec Cargo, Bash, Python 3 et [wasm-tools](https://github.com/bytecodealliance/wasm-tools). Exécutez les commandes à la racine du dépôt. La compilation produit le ZIP et sa somme SHA-256. Lancez ensuite `./package-preview-kit.sh` pour préparer le kit avec le correctif, les illustrations et le guide.
+Installez Rust avec Cargo, Bash, Python 3 et [wasm-tools](https://github.com/bytecodealliance/wasm-tools). Exécutez les commandes à la racine du dépôt. La compilation produit le ZIP et sa somme SHA-256.
 
 ```sh
 rustup target add wasm32-unknown-unknown
@@ -57,7 +53,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-Le test d’intégration utilise la CLI de SolidCraft 0.42.0. Dans les scripts CLI ou MCP, appelez `applica` via `plugin.run` avec `solo_quote: true` pour obtenir les cotes sans modifier le modèle. SolidInserts utilise l’[environnement d’exécution des extensions de SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.42.0/docs/plugin-runtime.md).
+Le test d’intégration utilise la CLI de SolidCraft 0.44.1. Dans les scripts CLI ou MCP, appelez `applica` via `plugin.run` avec `solo_quote: true` pour obtenir les cotes sans modifier le modèle. SolidInserts utilise l’[environnement d’exécution des extensions de SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.44.1/docs/plugin-runtime.md).
 
 ## Licence et soutien
 

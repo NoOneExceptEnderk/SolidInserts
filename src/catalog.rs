@@ -204,16 +204,34 @@ mod tests {
         );
         assert_eq!(apply["name"], "applica");
         assert_eq!(apply["effect"], "edit");
-        let fields = &apply["input_schema"]["properties"];
-        assert_eq!(fields.as_object().unwrap().len(), 3);
-        assert_eq!(apply["input_schema"]["x-solidinserts-select-holes"], 2);
+        let schema = &apply["input_schema"];
+        let fields = &schema["properties"];
+        assert_eq!(
+            schema["required"],
+            serde_json::json!(["hole_picks", "serie", "filettatura"])
+        );
+        assert_eq!(
+            fields["hole_picks"]["x-solidcraft-selection"],
+            serde_json::json!({"version": 1, "accept": ["edge"]})
+        );
+        assert_eq!(fields["hole_picks"]["minItems"], 1);
         assert_eq!(fields["filettatura"]["enum"], serde_json::json!(options));
         assert_eq!(fields["filettatura"]["default"], AUTO);
         let series = [Series::Standard, Series::Corto, Series::Voron];
-        assert_eq!(
-            fields["serie"]["enum"],
-            serde_json::json!(series.map(Series::label))
-        );
+        let series_choices = fields["serie"]["oneOf"].as_array().unwrap();
+        assert_eq!(series_choices.len(), series.len());
+        for (choice, (value, file)) in series_choices.iter().zip(
+            series
+                .map(Series::label)
+                .into_iter()
+                .zip(["standard", "short", "voron"]),
+        ) {
+            assert_eq!(choice["const"], value);
+            assert_eq!(
+                choice["x-solidcraft-icon"],
+                format!("assets/solidinserts/{file}.svg")
+            );
+        }
         for label in series
             .map(Series::label)
             .into_iter()

@@ -1,7 +1,7 @@
 {
   "id": "solidinserts",
   "name": "SolidInserts",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Create seats for heat-set threaded inserts at the circular rims of existing holes.",
   "capabilities": ["commands@0.1"],
   "runtime": {
@@ -16,15 +16,25 @@
         ],
         "input_schema": {
           "type": "object",
-          "x-solidinserts-select-holes": 2,
-          "x-solidinserts-locale": true,
-          "required": ["serie", "filettatura"],
+          "required": ["hole_picks", "serie", "filettatura"],
           "properties": {
+            "hole_picks": {
+              "type": "array",
+              "title": "Hole rims",
+              "description": "Select the circular rims on the side where the inserts go.",
+              "minItems": 1,
+              "maxItems": 24,
+              "x-solidcraft-selection": {"version": 1, "accept": ["edge"]}
+            },
             "serie": {
               "type": "string",
               "title": "Type",
               "description": "Short Version for M3, M4 and M5. VORON M3 × 5 × 4 for M3.",
-              "enum": ["Standard", "Short Version", "VORON M3 × 5 × 4"],
+              "oneOf": [
+                {"const": "Standard", "title": "Standard", "x-solidcraft-icon": "assets/solidinserts/standard.svg"},
+                {"const": "Short Version", "title": "Short Version", "x-solidcraft-icon": "assets/solidinserts/short.svg"},
+                {"const": "VORON M3 × 5 × 4", "title": "VORON M3 × 5 × 4", "x-solidcraft-icon": "assets/solidinserts/voron.svg"}
+              ],
               "default": "Standard"
             },
             "filettatura": {
