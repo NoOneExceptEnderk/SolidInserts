@@ -15,7 +15,9 @@ Mit **Captive Nut Pockets** erstellst du innenliegende Taschen für Sechskantmut
 
 ## SolidInserts ausprobieren
 
-1. Verwende [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2). Lade das Plugin-ZIP aus den [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases) herunter. Du kannst das Plugin auch mit den Befehlen unten erstellen. Dabei entsteht `dist/solidinserts-<Version>.zip`.
+SolidInserts 1.3.1 funktioniert mit den offiziellen Versionen [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2) und [SolidCraft Desktop 0.48.1](https://github.com/tangency-labs/solidcraft/releases/tag/v0.48.1) ohne Patch. Die Kompatibilität mit 0.48.1 wurde unter Linux geprüft.
+
+1. Lade das Plugin-ZIP aus den [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases) herunter. Du kannst das Plugin auch mit den Befehlen unten erstellen. Dabei entsteht `dist/solidinserts-<Version>.zip`.
 2. Installiere das ZIP über **Datei → Plugins…**. Für die manuelle Installation entpacke den gesamten Ordner `solidinserts` einschließlich seiner Ressourcen in den Plugin-Ordner deines Systems.
 
    | System | Plugin-Ordner |
@@ -28,7 +30,7 @@ Mit **Captive Nut Pockets** erstellst du innenliegende Taschen für Sechskantmut
 
 ## Schnitte in der Vorschau prüfen
 
-Die offizielle Desktop-Version 0.46.2 zeigt die 3D-Vorschau ohne Patch. Sie aktualisiert sich, wenn du Kanten auswählst oder die Einstellungen änderst. **Cancel** verwirft die Vorschau.
+SolidCraft Desktop zeigt die 3D-Vorschau ohne Patch. Sie aktualisiert sich, wenn du Kanten auswählst oder die Einstellungen änderst. **Cancel** verwirft die Vorschau.
 
 ## Unterstützte Gewindeeinsätze
 
@@ -55,7 +57,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-Der Integrationstest benötigt die CLI von SolidCraft 0.46.2. In CLI- oder MCP-Skripten liefert `applica` über `plugin.run` mit `solo_quote: true` die Maße, ohne das Modell zu ändern. SolidInserts nutzt die [Plugin-Laufzeit von SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md).
+Der Integrationstest war mit den CLIs von SolidCraft 0.46.2 und 0.48.1 erfolgreich. In CLI- oder MCP-Skripten liefert `applica` über `plugin.run` mit `solo_quote: true` die Maße, ohne das Modell zu ändern. SolidInserts nutzt die [Plugin-Laufzeit von SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md).
 
 ## Lizenz und Unterstützung
 

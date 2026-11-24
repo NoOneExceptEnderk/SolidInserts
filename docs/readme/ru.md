@@ -15,7 +15,9 @@ SolidInserts привязывает каждое посадочное место
 
 ## Как попробовать SolidInserts
 
-1. Используйте [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2). Скачайте ZIP плагина из раздела [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases). Плагин также можно собрать командами ниже. Результат появится в `dist/solidinserts-<version>.zip`.
+SolidInserts 1.3.1 работает без патчей в официальных версиях [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2) и [SolidCraft Desktop 0.48.1](https://github.com/tangency-labs/solidcraft/releases/tag/v0.48.1). Совместимость с 0.48.1 проверена в Linux.
+
+1. Скачайте ZIP плагина из раздела [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases). Плагин также можно собрать командами ниже. Результат появится в `dist/solidinserts-<version>.zip`.
 2. Установите ZIP через **Файл → Plugins…**. Для ручной установки распакуйте папку `solidinserts` целиком, вместе с ресурсами, в каталог плагинов своей системы.
 
    | Система | Каталог плагинов |
@@ -28,7 +30,7 @@ SolidInserts привязывает каждое посадочное место
 
 ## Предварительный просмотр вырезов
 
-В официальной версии SolidCraft 0.46.2 трёхмерный предварительный просмотр работает без патча. Он обновляется при выборе кромок и изменении настроек. **Cancel** закрывает предварительный просмотр.
+В SolidCraft Desktop трёхмерный предварительный просмотр работает без патча. Он обновляется при выборе кромок и изменении настроек. **Cancel** закрывает предварительный просмотр.
 
 ## Поддерживаемые вставки
 
@@ -55,7 +57,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-Интеграционный тест использует CLI SolidCraft 0.46.2. Из скриптов CLI или MCP вызовите `applica` через `plugin.run` с параметром `solo_quote: true`, чтобы получить размеры без изменения модели. SolidInserts использует [среду выполнения плагинов SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md).
+Интеграционный тест прошёл с CLI SolidCraft 0.46.2 и 0.48.1. Из скриптов CLI или MCP вызовите `applica` через `plugin.run` с параметром `solo_quote: true`, чтобы получить размеры без изменения модели. SolidInserts использует [среду выполнения плагинов SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md).
 
 ## Лицензия и поддержка
 

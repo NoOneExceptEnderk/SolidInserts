@@ -15,7 +15,9 @@ SolidCraft Desktop-இல் ஏற்கெனவே உள்ள துளை�
 
 ## SolidInserts-ஐ முயற்சி செய்யுங்கள்
 
-1. [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2) பதிப்பைப் பயன்படுத்துங்கள். செருகுநிரலின் ZIP கோப்பை [வெளியீடுகள் பக்கத்திலிருந்து](https://github.com/NoOneExceptEnderk/SolidInserts/releases) பதிவிறக்கலாம். அல்லது கீழுள்ள கட்டளைகளால் செருகுநிரலைத் தொகுத்து `dist/solidinserts-<version>.zip` கோப்பை உருவாக்குங்கள்.
+SolidInserts 1.3.1, அதிகாரப்பூர்வ [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2) மற்றும் [SolidCraft Desktop 0.48.1](https://github.com/tangency-labs/solidcraft/releases/tag/v0.48.1) பதிப்புகளில் திருத்தம் இல்லாமலேயே இயங்கும். 0.48.1 உடனான இணக்கத்தன்மை Linux-இல் சரிபார்க்கப்பட்டது.
+
+1. செருகுநிரலின் ZIP கோப்பை [வெளியீடுகள் பக்கத்திலிருந்து](https://github.com/NoOneExceptEnderk/SolidInserts/releases) பதிவிறக்கலாம். அல்லது கீழுள்ள கட்டளைகளால் செருகுநிரலைத் தொகுத்து `dist/solidinserts-<version>.zip` கோப்பை உருவாக்குங்கள்.
 2. **File → Plugins…** வழியாக ZIP கோப்பை நிறுவுங்கள். கைமுறையாக நிறுவ, வளங்கள் உட்பட முழு `solidinserts` கோப்புறையையும் உங்கள் கணினியின் செருகுநிரல் கோப்புறையில் பிரித்தெடுங்கள்.
 
    | இயங்குதளம் | செருகுநிரல் கோப்புறை |
@@ -28,7 +30,7 @@ SolidCraft Desktop-இல் ஏற்கெனவே உள்ள துளை�
 
 ## வெட்டுவதற்கு முன் முன்னோட்டம்
 
-அதிகாரப்பூர்வ SolidCraft 0.46.2 பதிப்பில் திருத்தம் இல்லாமலேயே 3D முன்னோட்டம் கிடைக்கும். விளிம்புகளைத் தேர்ந்தெடுக்கும்போதும் அமைப்புகளை மாற்றும்போதும் அது புதுப்பிக்கப்படும். **Cancel** அழுத்தினால் முன்னோட்டம் நீக்கப்படும்.
+SolidCraft Desktop-இல் திருத்தம் இல்லாமலேயே 3D முன்னோட்டம் கிடைக்கும். விளிம்புகளைத் தேர்ந்தெடுக்கும்போதும் அமைப்புகளை மாற்றும்போதும் அது புதுப்பிக்கப்படும். **Cancel** அழுத்தினால் முன்னோட்டம் நீக்கப்படும்.
 
 ## ஆதரிக்கப்படும் செருகிகள்
 
@@ -55,7 +57,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-ஒருங்கிணைப்புச் சோதனை SolidCraft 0.46.2 CLI-ஐப் பயன்படுத்துகிறது. CLI அல்லது MCP நிரல்களில் மாதிரியைத் திருத்தாமல் அளவுகளைப் பெற, `plugin.run` வழியாக `applica`-ஐ `solo_quote: true` உடன் அழைக்கவும். SolidInserts, [SolidCraft செருகுநிரல் இயக்கச் சூழலைப்](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md) பயன்படுத்துகிறது.
+SolidCraft 0.46.2 மற்றும் 0.48.1 CLI பதிப்புகளுடன் ஒருங்கிணைப்புச் சோதனை வெற்றியடைந்தது. CLI அல்லது MCP நிரல்களில் மாதிரியைத் திருத்தாமல் அளவுகளைப் பெற, `plugin.run` வழியாக `applica`-ஐ `solo_quote: true` உடன் அழைக்கவும். SolidInserts, [SolidCraft செருகுநிரல் இயக்கச் சூழலைப்](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md) பயன்படுத்துகிறது.
 
 ## உரிமமும் ஆதரவும்
 

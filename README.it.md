@@ -15,7 +15,9 @@ SolidInserts usa il bordo circolare del foro per posizionare la sede. Scegli una
 
 ## Prova SolidInserts
 
-1. Per SolidInserts 1.3.1 usa [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2). Scarica lo ZIP del plugin dai [rilasci](https://github.com/NoOneExceptEnderk/SolidInserts/releases). Puoi anche compilare il plugin con i comandi riportati sotto per generare `dist/solidinserts-<versione>.zip`.
+SolidInserts 1.3.1 funziona senza patch sulle versioni ufficiali [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2) e [SolidCraft Desktop 0.48.1](https://github.com/tangency-labs/solidcraft/releases/tag/v0.48.1). La compatibilità con la 0.48.1 è stata verificata su Linux.
+
+1. Scarica lo ZIP del plugin dai [rilasci](https://github.com/NoOneExceptEnderk/SolidInserts/releases). Puoi anche compilare il plugin con i comandi riportati sotto per generare `dist/solidinserts-<versione>.zip`.
 2. Installa lo ZIP da **File → Plugin…**. Per l’installazione manuale, estrai l’intera cartella `solidinserts`, comprese le risorse, nella cartella dei plugin del tuo sistema.
 
    | Sistema | Cartella dei plugin |
@@ -66,7 +68,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-La suite di integrazione usa la CLI di SolidCraft 0.46.2. Negli script CLI o MCP puoi chiamare `applica` o `captive-nut-pockets` tramite `plugin.run` con `solo_quote: true` per ottenere le quote senza modificare il modello. SolidInserts usa il [runtime dei plugin di SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md).
+La suite di integrazione è passata con le CLI di SolidCraft 0.46.2 e 0.48.1. Negli script CLI o MCP puoi chiamare `applica` o `captive-nut-pockets` tramite `plugin.run` con `solo_quote: true` per ottenere le quote senza modificare il modello. SolidInserts usa il [runtime dei plugin di SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md).
 
 ## Licenza e supporto
 

@@ -15,7 +15,9 @@ SolidInserts 使用孔口的圆形边缘定位安装孔。选择 CNC Kitchen 嵌
 
 ## 试用 SolidInserts
 
-1. 使用 [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2)。插件 ZIP 可从[发行版页面](https://github.com/NoOneExceptEnderk/SolidInserts/releases)下载。也可以使用下方命令编译插件，生成 `dist/solidinserts-<version>.zip`。
+SolidInserts 1.3.1 可在官方 [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2) 和 [SolidCraft Desktop 0.48.1](https://github.com/tangency-labs/solidcraft/releases/tag/v0.48.1) 上运行，无需补丁。已在 Linux 上验证与 0.48.1 的兼容性。
+
+1. 插件 ZIP 可从[发行版页面](https://github.com/NoOneExceptEnderk/SolidInserts/releases)下载。也可以使用下方命令编译插件，生成 `dist/solidinserts-<version>.zip`。
 2. 通过 **文件 → Plugins…** 安装 ZIP。手动安装时，请将包含资源文件的整个 `solidinserts` 文件夹解压到系统的插件目录。
 
    | 系统 | 插件目录 |
@@ -28,7 +30,7 @@ SolidInserts 使用孔口的圆形边缘定位安装孔。选择 CNC Kitchen 嵌
 
 ## 切除前预览
 
-官方 SolidCraft 0.46.2 无需补丁即可显示 3D 预览。选择圆边或更改设置时，预览会自动更新。点击 **Cancel** 可取消预览。
+SolidCraft Desktop 无需补丁即可显示 3D 预览。选择圆边或更改设置时，预览会自动更新。点击 **Cancel** 可取消预览。
 
 ## 支持的嵌件
 
@@ -55,7 +57,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-集成测试使用 SolidCraft 0.46.2 的 CLI。在 CLI 或 MCP 脚本中，可以通过 `plugin.run` 调用 `applica`，并设置 `solo_quote: true`，从而在不修改模型的情况下获取尺寸。SolidInserts 使用 [SolidCraft 插件运行时](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md)。
+集成测试已在 SolidCraft 0.46.2 和 0.48.1 的 CLI 上通过。在 CLI 或 MCP 脚本中，可以通过 `plugin.run` 调用 `applica`，并设置 `solo_quote: true`，从而在不修改模型的情况下获取尺寸。SolidInserts 使用 [SolidCraft 插件运行时](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md)。
 
 ## 许可证与支持
 

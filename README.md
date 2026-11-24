@@ -15,7 +15,9 @@ SolidInserts uses the circular edge of each hole to locate the seat. Choose a CN
 
 ## Try SolidInserts
 
-1. Use [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2) with SolidInserts 1.3. Get the plugin ZIP from [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases). You can also build it with the commands below to produce `dist/solidinserts-<version>.zip`.
+SolidInserts 1.3.1 works on official [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2) and [SolidCraft Desktop 0.48.1](https://github.com/tangency-labs/solidcraft/releases/tag/v0.48.1) without patches. Compatibility with 0.48.1 was verified on Linux.
+
+1. Get the plugin ZIP from [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases). You can also build it with the commands below to produce `dist/solidinserts-<version>.zip`.
 2. Install the ZIP from **File → Plugins…**. For manual installation, extract the entire `solidinserts` folder, including its assets, into the plugins folder for your system.
 
    | OS | Plugins folder |
@@ -66,7 +68,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-The integration suite uses the SolidCraft 0.46.2 CLI. For CLI or MCP scripts, call `applica` or `captive-nut-pockets` through `plugin.run` with `solo_quote: true` to get the dimensions without editing the model. SolidInserts uses the [SolidCraft plugin runtime](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md).
+The integration suite passed with the SolidCraft 0.46.2 and 0.48.1 CLIs. For CLI or MCP scripts, call `applica` or `captive-nut-pockets` through `plugin.run` with `solo_quote: true` to get the dimensions without editing the model. SolidInserts uses the [SolidCraft plugin runtime](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md).
 
 ## License and support
 

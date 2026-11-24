@@ -15,7 +15,9 @@ SolidInserts positionne chaque logement à partir de l’arête circulaire du tr
 
 ## Essayer SolidInserts
 
-1. Utilisez [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2). Téléchargez le ZIP de l’extension depuis les [versions publiées](https://github.com/NoOneExceptEnderk/SolidInserts/releases). Vous pouvez aussi compiler l’extension avec les commandes ci-dessous pour produire `dist/solidinserts-<version>.zip`.
+SolidInserts 1.3.1 fonctionne sans correctif avec les versions officielles [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2) et [SolidCraft Desktop 0.48.1](https://github.com/tangency-labs/solidcraft/releases/tag/v0.48.1). La compatibilité avec la version 0.48.1 a été vérifiée sous Linux.
+
+1. Téléchargez le ZIP de l’extension depuis les [versions publiées](https://github.com/NoOneExceptEnderk/SolidInserts/releases). Vous pouvez aussi compiler l’extension avec les commandes ci-dessous pour produire `dist/solidinserts-<version>.zip`.
 2. Installez le ZIP depuis **Fichier → Plugins…**. Pour une installation manuelle, extrayez le dossier `solidinserts` complet, avec ses ressources, dans le dossier des extensions de votre système.
 
    | Système | Dossier des extensions |
@@ -28,7 +30,7 @@ SolidInserts positionne chaque logement à partir de l’arête circulaire du tr
 
 ## Prévisualiser les enlèvements de matière
 
-La version officielle de SolidCraft 0.46.2 affiche l’aperçu 3D sans correctif. Il se met à jour lorsque vous sélectionnez des arêtes ou modifiez les réglages. **Cancel** ferme l’aperçu.
+SolidCraft Desktop affiche l’aperçu 3D sans correctif. Il se met à jour lorsque vous sélectionnez des arêtes ou modifiez les réglages. **Cancel** ferme l’aperçu.
 
 ## Inserts pris en charge
 
@@ -55,7 +57,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-Le test d’intégration utilise la CLI de SolidCraft 0.46.2. Dans les scripts CLI ou MCP, appelez `applica` via `plugin.run` avec `solo_quote: true` pour obtenir les cotes sans modifier le modèle. SolidInserts utilise l’[environnement d’exécution des extensions de SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md).
+Le test d’intégration a réussi avec les CLI de SolidCraft 0.46.2 et 0.48.1. Dans les scripts CLI ou MCP, appelez `applica` via `plugin.run` avec `solo_quote: true` pour obtenir les cotes sans modifier le modèle. SolidInserts utilise l’[environnement d’exécution des extensions de SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md).
 
 ## Licence et soutien
 
