@@ -11,9 +11,11 @@ Cria alojamentos para insertos roscados de instalação a quente em furos existe
 
 O SolidInserts posiciona cada alojamento a partir da aresta circular do furo. Escolhe uma série CNC Kitchen e uma medida de parafuso para fazer vários cortes numa só operação. Os esboços e cortes ficam editáveis no histórico do SolidCraft. Basta usar **Anular** uma vez para retirar todos os cortes da operação.
 
+**Captive Nut Pockets** cria alojamentos internos para porcas sextavadas DIN 934 e indica as alturas para as pausas de impressão. Configura as pausas no fatiador. [Instruções em inglês](../../README.md#captive-nuts-and-print-pauses)
+
 ## Experimentar o SolidInserts
 
-1. Usa o [SolidCraft Desktop 0.44.1](https://github.com/tangency-labs/solidcraft/releases/tag/v0.44.1). Descarrega o ZIP do módulo a partir dos [lançamentos](https://github.com/NoOneExceptEnderk/SolidInserts/releases). Também podes compilar o módulo com os comandos abaixo para obter `dist/solidinserts-<versão>.zip`.
+1. Usa o [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2). Descarrega o ZIP do módulo a partir dos [lançamentos](https://github.com/NoOneExceptEnderk/SolidInserts/releases). Também podes compilar o módulo com os comandos abaixo para obter `dist/solidinserts-<versão>.zip`.
 2. Instala o ZIP em **Ficheiro → Plugins…**. Para a instalação manual, extrai a pasta `solidinserts` completa, incluindo os seus recursos, para a pasta de módulos do teu sistema.
 
    | Sistema | Pasta de módulos |
@@ -26,7 +28,7 @@ O SolidInserts posiciona cada alojamento a partir da aresta circular do furo. Es
 
 ## Pré-visualizar os cortes
 
-A versão oficial do SolidCraft 0.44.1 apresenta a pré-visualização 3D sem alterações à aplicação. A pré-visualização é atualizada quando selecionas arestas ou alteras as definições. **Cancel** descarta-a.
+A versão oficial do SolidCraft 0.46.2 apresenta a pré-visualização 3D sem alterações à aplicação. A pré-visualização é atualizada quando selecionas arestas ou alteras as definições. **Cancel** descarta-a.
 
 ## Insertos compatíveis
 
@@ -53,7 +55,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-O teste de integração usa a CLI do SolidCraft 0.44.1. Em scripts CLI ou MCP, chama `applica` através de `plugin.run` com `solo_quote: true` para obter as cotas sem editar o modelo. O SolidInserts usa o [ambiente de execução de módulos do SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.44.1/docs/plugin-runtime.md).
+O teste de integração usa a CLI do SolidCraft 0.46.2. Em scripts CLI ou MCP, chama `applica` através de `plugin.run` com `solo_quote: true` para obter as cotas sem editar o modelo. O SolidInserts usa o [ambiente de execução de módulos do SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md).
 
 ## Licença e apoio
 

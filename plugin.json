@@ -1,9 +1,9 @@
 {
   "id": "solidinserts",
   "name": "SolidInserts",
-  "version": "1.2.0",
-  "description": "Create seats for heat-set threaded inserts at the circular rims of existing holes.",
-  "capabilities": ["commands@0.1"],
+  "version": "1.3.1",
+  "description": "Create heat-set insert seats and embedded hex nut pockets in existing holes.",
+  "capabilities": ["commands@0.1", "dialog@0.1"],
   "runtime": {
     "module": "plugin.wasm",
     "entries": [
@@ -56,6 +56,105 @@
             }
           }
         }
+      },
+      {
+        "name": "captive-nut-pockets",
+        "effect": "edit",
+        "dialog_hook": true,
+        "slots": [
+          {"kind": "menu", "name": "Captive Nut Pockets"},
+          {"kind": "ribbon", "name": "Captive Nut Pockets"}
+        ],
+        "input_schema": {
+          "type": "object",
+          "required": ["hole_picks", "print_face", "inset_mm", "side_clearance_mm", "axial_clearance_mm", "layer_height_mm", "first_layer_mm"],
+          "properties": {
+            "hole_picks": {
+              "type": "array",
+              "title": "Hole rims",
+              "description": "Select the circular rims of the holes on one body.",
+              "minItems": 1,
+              "maxItems": 24,
+              "x-solidcraft-selection": {"version": 1, "accept": ["edge"]}
+            },
+            "print_face": {
+              "type": "array",
+              "title": "Print face",
+              "description": "Pick the flat face to place on the print bed. Run saves it for Send to Slicer.",
+              "minItems": 1,
+              "maxItems": 1,
+              "x-solidcraft-selection": {"version": 1, "accept": ["face"]}
+            },
+            "nut_size": {
+              "type": "string",
+              "title": "Hex nut size (DIN 934)",
+              "description": "Automatic uses the closest nominal diameter within ±0.25 mm for each hole. Choose a size manually for ties or other diameters.",
+              "enum": ["Automatic (nominal Ø)", "M2", "M2.5", "M3", "M4", "M5", "M6", "M8", "M10"],
+              "default": "Automatic (nominal Ø)"
+            },
+            "matched_sizes": {
+              "type": "string",
+              "title": "Matched nut sizes",
+              "default": ""
+            },
+            "inset_mm": {
+              "type": "number",
+              "title": "Inset from hole rim",
+              "description": "Material left between the selected rim and the start of the pocket.",
+              "unit": "mm",
+              "default": 2,
+              "minimum": 0.05,
+              "maximum": 1000
+            },
+            "side_clearance_mm": {
+              "type": "number",
+              "title": "Clearance per side",
+              "unit": "mm",
+              "default": 0.2,
+              "minimum": 0,
+              "maximum": 1
+            },
+            "axial_clearance_mm": {
+              "type": "number",
+              "title": "Height clearance",
+              "description": "Extra height above the nut.",
+              "unit": "mm",
+              "default": 0.2,
+              "minimum": 0,
+              "maximum": 2
+            },
+            "layer_height_mm": {
+              "type": "number",
+              "title": "Layer height",
+              "description": "Use 0 for adaptive layers and get the geometric closing heights.",
+              "unit": "mm",
+              "default": 0.2,
+              "minimum": 0,
+              "maximum": 2
+            },
+            "first_layer_mm": {
+              "type": "number",
+              "title": "First layer height",
+              "description": "Use 0 if the first layer has the same height as the others.",
+              "unit": "mm",
+              "default": 0,
+              "minimum": 0,
+              "maximum": 2
+            },
+            "solo_quote": {
+              "type": "boolean",
+              "title": "Report only",
+              "description": "Calculate pause heights without modifying the design.",
+              "default": false
+            },
+            "pause_report": {
+              "type": "string",
+              "title": "Pause heights (mm)",
+              "description": "Printed height → pause before layer at Z. Hover for the full report.",
+              "default": ""
+            }
+          }
+        }
       }
     ],
     "commands": [
@@ -67,11 +166,13 @@
       "sketch.project",
       "sketch.inspect",
       "sketch.circle.center",
+      "sketch.line",
       "sketch.dimension",
       "sketch.finish",
       "solid.extrude",
+      "body.print_face",
       "select.clear"
     ],
-    "limits": {"fuel": 100000000, "memory_mib": 64, "deadline_ms": 30000}
+    "limits": {"fuel": 300000000, "memory_mib": 64, "deadline_ms": 30000}
   }
 }

@@ -11,9 +11,11 @@ Erstelle in SolidCraft Desktop Aufnahmen für Gewindeeinsätze zum Einschmelzen,
 
 SolidInserts positioniert die Aufnahme an der kreisförmigen Bohrungskante. Wähle eine CNC-Kitchen-Serie und eine Schraubengröße, um mehrere Aufnahmen in einem Arbeitsgang zu erstellen. Skizzen und Schnitte bleiben im Modellverlauf von SolidCraft bearbeitbar. Einmal **Rückgängig** entfernt alle Schnitte des Arbeitsgangs.
 
+Mit **Captive Nut Pockets** erstellst du innenliegende Taschen für Sechskantmuttern nach DIN 934 und erhältst die Höhen für die Druckpausen. Lege die Pausen im Slicer fest. [Anleitung auf Englisch](../../README.md#captive-nuts-and-print-pauses)
+
 ## SolidInserts ausprobieren
 
-1. Verwende [SolidCraft Desktop 0.44.1](https://github.com/tangency-labs/solidcraft/releases/tag/v0.44.1). Lade das Plugin-ZIP aus den [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases) herunter. Du kannst das Plugin auch mit den Befehlen unten erstellen. Dabei entsteht `dist/solidinserts-<Version>.zip`.
+1. Verwende [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2). Lade das Plugin-ZIP aus den [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases) herunter. Du kannst das Plugin auch mit den Befehlen unten erstellen. Dabei entsteht `dist/solidinserts-<Version>.zip`.
 2. Installiere das ZIP über **Datei → Plugins…**. Für die manuelle Installation entpacke den gesamten Ordner `solidinserts` einschließlich seiner Ressourcen in den Plugin-Ordner deines Systems.
 
    | System | Plugin-Ordner |
@@ -26,7 +28,7 @@ SolidInserts positioniert die Aufnahme an der kreisförmigen Bohrungskante. Wäh
 
 ## Schnitte in der Vorschau prüfen
 
-Die offizielle Desktop-Version 0.44.1 zeigt die 3D-Vorschau ohne Patch. Sie aktualisiert sich, wenn du Kanten auswählst oder die Einstellungen änderst. **Cancel** verwirft die Vorschau.
+Die offizielle Desktop-Version 0.46.2 zeigt die 3D-Vorschau ohne Patch. Sie aktualisiert sich, wenn du Kanten auswählst oder die Einstellungen änderst. **Cancel** verwirft die Vorschau.
 
 ## Unterstützte Gewindeeinsätze
 
@@ -53,7 +55,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-Der Integrationstest benötigt die CLI von SolidCraft 0.44.1. In CLI- oder MCP-Skripten liefert `applica` über `plugin.run` mit `solo_quote: true` die Maße, ohne das Modell zu ändern. SolidInserts nutzt die [Plugin-Laufzeit von SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.44.1/docs/plugin-runtime.md).
+Der Integrationstest benötigt die CLI von SolidCraft 0.46.2. In CLI- oder MCP-Skripten liefert `applica` über `plugin.run` mit `solo_quote: true` die Maße, ohne das Modell zu ändern. SolidInserts nutzt die [Plugin-Laufzeit von SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md).
 
 ## Lizenz und Unterstützung
 

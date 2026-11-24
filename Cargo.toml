@@ -1,9 +1,9 @@
 [package]
 name = "solidinserts"
-version = "1.2.0"
+version = "1.3.1"
 edition = "2024"
 license = "MIT"
-description = "Plugin SolidCraft per le sedi degli inserti filettati a caldo"
+description = "SolidCraft plugin for heat-set insert seats and embedded hex nuts"
 publish = false
 
 [lib]

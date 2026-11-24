@@ -200,6 +200,223 @@ def run_tests(cad):
     print("PASS insufficient depth reported before a through cut")
 
 
+def test_repeated_insert(cad):
+    pilot = cad.root / "m25-pilots.sc"
+    partial = cad.root / "m25-partial.sc"
+    edges = step("model.edges", body="Body1")
+    faces = step("model.faces", body="Body1")
+    inspect = step("document.inspect", timeline="summary", bodies=False)
+    measure_body = step("inspect.measure", bodies=["Body1"])
+    centers = [(8, 8), (23, 8), (38, 8)]
+    *_, rims, original = cad.run([
+        step("solid.box", length=46, width=20, height=12, name="Plate"),
+        *(step("solid.hole", position=[x, y, 12], diameter=2.5, name=f"Pilot {i}")
+          for i, (x, y) in enumerate(centers, start=1)),
+        edges, measure_body,
+    ], save=pilot)
+    names = [f"F1:+z|F{i}:bore:side:0" for i in range(2, 5)]
+    plugin = cad.plugin(serie="Standard", filettatura="M2,5 × 0,45", locale="en")
+
+    _, applied, batch_volume, _, undone = cad.run([
+        cad.pick(rims["edges"], *names), plugin, measure_body, step("edit.undo"), measure_body,
+    ], design=pilot)
+    assert applied["result"]["applicate"] == len(centers)
+    removed_per_seat = math.pi / 4 * (4.0**2 - 2.5**2) * 5.0
+    close(measure(original) - measure(batch_volume), len(centers) * removed_per_seat, 0.005)
+    close(measure(undone), measure(original))
+
+    _, _, updated_rims = cad.run([
+        cad.pick(rims["edges"], names[0]), plugin, edges,
+    ], design=pilot, save=partial)
+    _, applied, updated_rims = cad.run([
+        cad.pick(updated_rims["edges"], names[1]), plugin, edges,
+    ], design=partial, save=partial)
+    assert applied["result"]["applicate"] == 1
+    _, applied, document, sequential_volume, cylinders = cad.run([
+        cad.pick(updated_rims["edges"], names[2]), plugin, inspect, measure_body, faces,
+    ], design=partial)
+    assert applied["result"]["applicate"] == 1
+    feature_names = [feature["name"] for feature in document["timeline"]]
+    assert len(feature_names) == len(set(feature_names)) == 4 + 2 * len(centers)
+    close(measure(sequential_volume), measure(batch_volume))
+    for x, y in centers:
+        assert_cylinder(cylinders, x, y, 2.0)
+    print("PASS identical M2.5 seats in one batch and in separate runs after reopening")
+
+
+def test_dense_batch(cad):
+    pilot = cad.root / "dense-pilots.sc"
+    edges = step("model.edges", body="Body1")
+    measure_body = step("inspect.measure", bodies=["Body1"])
+    centers = [(8 + x * 12, 8 + y * 12) for y in range(4) for x in range(6)]
+    *_, rims, before = cad.run([
+        step("solid.box", length=76, width=52, height=12),
+        *(step("solid.hole", position=[x, y, 12], diameter=2.5) for x, y in centers),
+        edges, measure_body,
+    ], save=pilot)
+    names = ["|".join(sorted(("F1:+z", f"F{i}:bore:side:0"))) for i in range(2, 26)]
+    _, applied, after = cad.run([
+        cad.pick(rims["edges"], *names), cad.plugin(), measure_body,
+    ], design=pilot)
+    assert applied["result"]["applicate"] == 24
+    assert len({row["feature"] for row in applied["result"]["sedi"]}) == 24
+    close(measure(before) - measure(after), 24 * math.pi / 4 * (4.0**2 - 2.5**2) * 5, 0.005)
+    print("PASS 24 M2.5 seats on one densely drilled face")
+
+
+def test_opposite_seats(cad):
+    for thickness in (8, 12):
+        pilot = cad.root / f"opposite-{thickness}.sc"
+        *_, rims = cad.run([
+            step("solid.box", length=18, width=16, height=thickness),
+            step("solid.hole", position=[8, 8, thickness], diameter=2.5),
+            step("model.edges", body="Body1"),
+        ], save=pilot)
+        pick = cad.pick(rims["edges"], "F1:+z|F2:bore:side:0", "F1:-z|F2:bore:side:0")
+        _, quote = cad.run([pick, cad.plugin(solo_quote=True)], design=pilot)
+        if thickness == 8:
+            assert "seats for holes 1 and 2 overlap" in quote["result"]["impedimenti"][0]
+            cad.run([pick, cad.plugin()], design=pilot, expect_error="seats for holes 1 and 2 overlap")
+        else:
+            assert not quote["result"].get("impedimenti")
+            _, applied = cad.run([pick, cad.plugin()], design=pilot)
+            assert applied["result"]["applicate"] == 2
+    print("PASS opposing seats are blocked only when they would overlap")
+
+
+def test_captive_nut_pockets(cad):
+    pilot = cad.root / "nut-pilots.sc"
+    saved = cad.root / "nut-pockets.sc"
+    faces = step("model.faces", body="Body1")
+    measure_body = step("inspect.measure", bodies=["Body1"])
+    inspect = step("document.inspect", timeline="summary")
+    *_, rims, planes, before = cad.run([
+        step("solid.box", length=38, width=24, height=16),
+        step("solid.hole", position=[9, 12, 16], diameter=3.3),
+        step("solid.hole", position=[27, 12, 16], diameter=3.3),
+        step("model.edges", body="Body1"), faces, measure_body,
+    ], save=pilot)
+    entries = [
+        next(edge for edge in rims["edges"] if edge["name"] == f"F1:+z|F{i}:bore:side:0")
+        for i in (2, 3)
+    ]
+
+    def pick_face(name):
+        face = next(face for face in planes["faces"] if face["name"] == name)
+        return {"type": "face", "body": "Body1", "index": face["index"], "point": face["point"]}
+
+    def pockets(**overrides):
+        params = {
+            "hole_picks": [
+                {"type": "edge", "body": "Body1", "index": edge["index"], "point": edge["mid"]}
+                for edge in entries
+            ],
+            "print_face": [pick_face("F1:-z")],
+            "nut_size": "M3", "inset_mm": 6, "side_clearance_mm": 0.2, "axial_clearance_mm": 0.2,
+            "layer_height_mm": 0.2, "first_layer_mm": 0,
+        }
+        return cad.plugin("captive-nut-pockets", **(params | overrides))
+
+    before_doc, quote, after_doc = cad.run([inspect, pockets(solo_quote=True), inspect], design=pilot)
+    assert before_doc == after_doc
+    report = quote["result"]
+    assert (report["across_flats_mm"], report["pocket_height_mm"]) == (5.9, 2.6)
+    assert [(row["floor_z_mm"], row["roof_z_mm"]) for row in report["pockets"]] == [(7.4, 10), (7.4, 10)]
+    assert report["pauses"] == [{
+        "before_layer": 51, "printed_z_mm": 10, "layer_z_mm": 10.2,
+        "nut_size": "M3", "quantity": 2, "holes": [1, 2],
+    }]
+    flipped, adaptive, shifted, coarse = [
+        row["result"] for row in cad.run([
+            pockets(solo_quote=True, print_face=[pick_face("F1:+z")]),
+            pockets(solo_quote=True, layer_height_mm=0),
+            pockets(solo_quote=True, first_layer_mm=0.24),
+            pockets(solo_quote=True, layer_height_mm=1.2, axial_clearance_mm=0),
+        ], design=pilot)
+    ]
+    assert flipped["pauses"][0]["layer_z_mm"] == 8.8
+    assert adaptive["pauses"] == [] and adaptive["holes_without_pause"] == []
+    assert "10.0" in adaptive["summary"]
+    assert shifted["pauses"][0]["printed_z_mm"] == 10.04
+    assert shifted["pauses"][0]["layer_z_mm"] == 10.24
+    assert coarse["pauses"] == [] and coarse["holes_without_pause"] == [1, 2]
+    for opts, message in [
+        ({"inset_mm": 14}, "Leave material beyond"),
+        ({"print_face": [pick_face("F1:+x")]}, "perpendicular"),
+    ]:
+        cad.run([pockets(**opts)], design=pilot, expect_error=message)
+
+    applied, after, topology, doc = cad.run([pockets(), measure_body, faces, inspect], design=pilot, save=saved)
+    expected = 2 * (math.sqrt(3) / 2 * 5.9**2 - math.pi / 4 * 3.3**2) * 2.6
+    close(measure(before) - measure(after), expected, 0.005)
+    assert doc["undo"] == 1
+    for row in applied["result"]["pockets"]:
+        prefix = f'F{row["feature"]}:'
+        pocket_faces = [face for face in topology["faces"] if face["name"].startswith(prefix)]
+        assert sum(":side:" in face["name"] for face in pocket_faces) == 6
+        levels = sorted(face["point"][2] for face in pocket_faces if ":bottom" in face["name"])
+        assert len(levels) == 2
+        close(levels[0], 7.4)
+        close(levels[1], 10)
+    assert all(any(face["name"] == name for face in topology["faces"]) for name in ("F1:+z", "F1:-z"))
+
+    reopened, = cad.run([measure_body], design=saved)
+    close(measure(reopened), measure(after))
+    exported, = cad.run([
+        step("file.export_3mf", path=str(cad.root / "nut-pockets.3mf"), lay_on_print_faces=True),
+    ], design=saved)
+    assert len(exported["print_faces"]) == 1
+    _, _, undone, _, redone = cad.run([
+        pockets(), step("edit.undo"), measure_body, step("edit.redo"), measure_body,
+    ], design=pilot)
+    close(measure(undone), measure(before))
+    close(measure(redone), measure(after))
+    print("PASS enclosed hex nut geometry, grouped pause estimates, print orientation, reopen and undo/redo")
+
+
+def test_captive_nut_auto(cad):
+    pilot = cad.root / "nominal-and-clearance-holes.sc"
+    diameters = [3.0, 4.25, 3.30, 2.75, 2.80, 3.25]
+    *_, rims, planes = cad.run([
+        step("solid.box", length=105, width=24, height=16),
+        *(step("solid.hole", position=[10 + 16 * i, 12, 16], diameter=diameter)
+          for i, diameter in enumerate(diameters)),
+        step("model.edges", body="Body1"),
+        step("model.faces", body="Body1"),
+    ], save=pilot)
+    picks = []
+    for i in range(2, 2 + len(diameters)):
+        rim = next(edge for edge in rims["edges"] if edge["name"] == f"F1:+z|F{i}:bore:side:0")
+        picks.append({"type": "edge", "body": "Body1", "index": rim["index"], "point": rim["mid"]})
+    bed = next(face for face in planes["faces"] if face["name"] == "F1:-z")
+
+    def pockets(indices, **overrides):
+        return cad.plugin("captive-nut-pockets", **({
+            "hole_picks": [picks[i] for i in indices],
+            "print_face": [{"type": "face", "body": "Body1", "index": bed["index"], "point": bed["point"]}],
+            "inset_mm": 6, "side_clearance_mm": 0.2, "axial_clearance_mm": 0.2,
+            "layer_height_mm": 0.2, "first_layer_mm": 0, "solo_quote": True,
+        } | overrides))
+
+    (mixed, edge, undersized, chosen) = [record["result"] for record in cad.run([
+        pockets([0, 1], solo_quote=False),
+        pockets([5], nut_size="Automatic (nominal Ø)"),
+        pockets([4]),
+        pockets([2], nut_size="M3"),
+    ], design=pilot)]
+    assert [row["nut_size"] for row in mixed["pockets"]] == ["M3", "M4"]
+    assert [row["across_flats_mm"] for row in mixed["pockets"]] == [5.9, 7.4]
+    assert [row["pocket_height_mm"] for row in mixed["pockets"]] == [2.6, 3.4]
+    assert all("feature" in row for row in mixed["pockets"])
+    assert [(event["nut_size"], event["layer_z_mm"]) for event in mixed["pauses"]] == [("M3", 10.2), ("M4", 10.2)]
+    assert edge["nut_size"] == chosen["nut_size"] == undersized["nut_size"] == "M3"
+    assert edge["holes_with_undersize_bore"] == []
+    assert undersized["holes_with_undersize_bore"] == [1]
+    cad.run([pockets([2])], design=pilot, expect_error="No nominal size within")
+    cad.run([pockets([3])], design=pilot, expect_error="M2.5 and M3 are equally close")
+    print("PASS automatic M3/M4, ±0.25 mm threshold, ties, bore warning and manual override")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--cli", default="solidcraft-cli")
@@ -221,7 +438,13 @@ def main():
             assert archive.read("solidinserts/LICENSE") == (project / "LICENSE").read_bytes()
             assert archive.read("solidinserts/LICENSE-SOLIDCRAFT-WIT") == (project / "wit/LICENSE-MIT").read_bytes()
             archive.extractall(root)
-        run_tests(SolidCraft(args.cli, root, root / "solidinserts"))
+        cad = SolidCraft(args.cli, root, root / "solidinserts")
+        test_repeated_insert(cad)
+        test_opposite_seats(cad)
+        test_dense_batch(cad)
+        run_tests(cad)
+        test_captive_nut_pockets(cad)
+        test_captive_nut_auto(cad)
 
 
 if __name__ == "__main__":

@@ -184,7 +184,7 @@ mod tests {
     }
 
     #[test]
-    fn the_single_desktop_dialog_offers_the_catalog_threads() {
+    fn the_insert_dialog_offers_the_catalog_threads() {
         let manifest: serde_json::Value =
             serde_json::from_str(include_str!("../plugin.json")).unwrap();
         let options: Vec<_> = std::iter::once(AUTO)
@@ -192,9 +192,10 @@ mod tests {
             .collect();
         let entries = manifest["runtime"]["entries"].as_array().unwrap();
         assert_eq!(manifest["version"], env!("CARGO_PKG_VERSION"));
-        let [apply] = entries.as_slice() else {
-            panic!("SolidInserts must expose one entry");
-        };
+        let apply = entries
+            .iter()
+            .find(|entry| entry["name"] == "applica")
+            .unwrap();
         assert_eq!(
             apply["slots"],
             serde_json::json!([

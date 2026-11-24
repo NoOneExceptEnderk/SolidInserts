@@ -1,6 +1,7 @@
 mod catalog;
 mod geometry;
 mod locale;
+mod nut_pockets;
 
 #[cfg(target_arch = "wasm32")]
 mod guest;
@@ -59,6 +60,9 @@ pub fn execute(host: &mut impl Host, entry: &str, mut params: Value) -> Result<V
         .as_object_mut()
         .and_then(|object| object.remove("locale"));
     let lang = Language::from_tag(tag.as_ref().and_then(Value::as_str));
+    if entry == nut_pockets::ENTRY {
+        return nut_pockets::run(host, params, lang, false);
+    }
     if entry != "applica" {
         return Err(local_format!(
             lang,
@@ -206,22 +210,20 @@ pub fn execute(host: &mut impl Host, entry: &str, mut params: Value) -> Result<V
     }
     for (index, seat) in seats.iter().enumerate() {
         for (other_index, other) in seats[..index].iter().enumerate() {
-            if seat
-                .mouth
-                .coplanar_distance(&other.mouth)
-                .is_some_and(|distance| {
-                    distance <= (seat.diameter + other.diameter) / 2.0 + geometry::TOLERANCE_MM
-                })
-            {
+            if seat.mouth.overlaps(
+                &other.mouth,
+                (seat.diameter + other.diameter) / 2.0,
+                seat.depth + other.depth,
+            ) {
                 obstacles.push(local_format!(
                     lang,
                     [
-                        "Le sedi dei fori {} e {} si sovrappongono all’ingresso.",
-                        "The seats for holes {} and {} overlap at the opening.",
-                        "Die Aufnahmen für die Bohrungen {} und {} überlappen sich an der Öffnung.",
-                        "Los alojamientos de los agujeros {} y {} se superponen en la entrada.",
-                        "Les logements des trous {} et {} se chevauchent à l’entrée.",
-                        "Os alojamentos dos furos {} e {} se sobrepõem na entrada."
+                        "Le sedi dei fori {} e {} si sovrappongono.",
+                        "The seats for holes {} and {} overlap.",
+                        "Die Aufnahmen für die Bohrungen {} und {} überlappen sich.",
+                        "Los alojamientos de los agujeros {} y {} se superponen.",
+                        "Les logements des trous {} et {} se chevauchent.",
+                        "Os alojamentos dos furos {} e {} se sobrepõem."
                     ],
                     other_index + 1,
                     index + 1

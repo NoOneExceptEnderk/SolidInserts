@@ -11,9 +11,11 @@
 
 SolidInserts привязывает каждое посадочное место к круглой кромке отверстия. Выберите серию вставок CNC Kitchen и размер винта, чтобы обработать несколько отверстий за одну операцию. Эскизы и операции вырезания остаются редактируемыми в истории SolidCraft. Одно действие **Отменить** убирает все вырезы операции.
 
+**Captive Nut Pockets** создаёт внутренние карманы для шестигранных гаек DIN 934 и показывает высоты пауз печати. Задайте паузы в слайсере. [Инструкция на английском](../../README.md#captive-nuts-and-print-pauses)
+
 ## Как попробовать SolidInserts
 
-1. Используйте [SolidCraft Desktop 0.44.1](https://github.com/tangency-labs/solidcraft/releases/tag/v0.44.1). Скачайте ZIP плагина из раздела [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases). Плагин также можно собрать командами ниже. Результат появится в `dist/solidinserts-<version>.zip`.
+1. Используйте [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2). Скачайте ZIP плагина из раздела [Releases](https://github.com/NoOneExceptEnderk/SolidInserts/releases). Плагин также можно собрать командами ниже. Результат появится в `dist/solidinserts-<version>.zip`.
 2. Установите ZIP через **Файл → Plugins…**. Для ручной установки распакуйте папку `solidinserts` целиком, вместе с ресурсами, в каталог плагинов своей системы.
 
    | Система | Каталог плагинов |
@@ -26,7 +28,7 @@ SolidInserts привязывает каждое посадочное место
 
 ## Предварительный просмотр вырезов
 
-В официальной версии SolidCraft 0.44.1 трёхмерный предварительный просмотр работает без патча. Он обновляется при выборе кромок и изменении настроек. **Cancel** закрывает предварительный просмотр.
+В официальной версии SolidCraft 0.46.2 трёхмерный предварительный просмотр работает без патча. Он обновляется при выборе кромок и изменении настроек. **Cancel** закрывает предварительный просмотр.
 
 ## Поддерживаемые вставки
 
@@ -53,7 +55,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-Интеграционный тест использует CLI SolidCraft 0.44.1. Из скриптов CLI или MCP вызовите `applica` через `plugin.run` с параметром `solo_quote: true`, чтобы получить размеры без изменения модели. SolidInserts использует [среду выполнения плагинов SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.44.1/docs/plugin-runtime.md).
+Интеграционный тест использует CLI SolidCraft 0.46.2. Из скриптов CLI или MCP вызовите `applica` через `plugin.run` с параметром `solo_quote: true`, чтобы получить размеры без изменения модели. SolidInserts использует [среду выполнения плагинов SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md).
 
 ## Лицензия и поддержка
 

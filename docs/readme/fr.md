@@ -11,9 +11,11 @@ Créez des logements pour inserts filetés à chaud dans des trous existants ave
 
 SolidInserts positionne chaque logement à partir de l’arête circulaire du trou. Choisissez une série CNC Kitchen et une taille de vis pour usiner plusieurs logements en une seule opération. Les esquisses et les enlèvements de matière restent modifiables dans l’historique de SolidCraft. Une seule annulation retire tous les usinages de l’opération.
 
+**Captive Nut Pockets** crée des logements internes pour des écrous hexagonaux DIN 934 et indique les hauteurs de pause. Ajoutez les pauses dans le trancheur. [Instructions en anglais](../../README.md#captive-nuts-and-print-pauses)
+
 ## Essayer SolidInserts
 
-1. Utilisez [SolidCraft Desktop 0.44.1](https://github.com/tangency-labs/solidcraft/releases/tag/v0.44.1). Téléchargez le ZIP de l’extension depuis les [versions publiées](https://github.com/NoOneExceptEnderk/SolidInserts/releases). Vous pouvez aussi compiler l’extension avec les commandes ci-dessous pour produire `dist/solidinserts-<version>.zip`.
+1. Utilisez [SolidCraft Desktop 0.46.2](https://github.com/tangency-labs/solidcraft/releases/tag/v0.46.2). Téléchargez le ZIP de l’extension depuis les [versions publiées](https://github.com/NoOneExceptEnderk/SolidInserts/releases). Vous pouvez aussi compiler l’extension avec les commandes ci-dessous pour produire `dist/solidinserts-<version>.zip`.
 2. Installez le ZIP depuis **Fichier → Plugins…**. Pour une installation manuelle, extrayez le dossier `solidinserts` complet, avec ses ressources, dans le dossier des extensions de votre système.
 
    | Système | Dossier des extensions |
@@ -26,7 +28,7 @@ SolidInserts positionne chaque logement à partir de l’arête circulaire du tr
 
 ## Prévisualiser les enlèvements de matière
 
-La version officielle de SolidCraft 0.44.1 affiche l’aperçu 3D sans correctif. Il se met à jour lorsque vous sélectionnez des arêtes ou modifiez les réglages. **Cancel** ferme l’aperçu.
+La version officielle de SolidCraft 0.46.2 affiche l’aperçu 3D sans correctif. Il se met à jour lorsque vous sélectionnez des arêtes ou modifiez les réglages. **Cancel** ferme l’aperçu.
 
 ## Inserts pris en charge
 
@@ -53,7 +55,7 @@ cargo test --locked
 python3 tests/solidcraft.py --cli /path/to/solidcraft-cli
 ```
 
-Le test d’intégration utilise la CLI de SolidCraft 0.44.1. Dans les scripts CLI ou MCP, appelez `applica` via `plugin.run` avec `solo_quote: true` pour obtenir les cotes sans modifier le modèle. SolidInserts utilise l’[environnement d’exécution des extensions de SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.44.1/docs/plugin-runtime.md).
+Le test d’intégration utilise la CLI de SolidCraft 0.46.2. Dans les scripts CLI ou MCP, appelez `applica` via `plugin.run` avec `solo_quote: true` pour obtenir les cotes sans modifier le modèle. SolidInserts utilise l’[environnement d’exécution des extensions de SolidCraft](https://github.com/tangency-labs/solidcraft/blob/v0.46.2/docs/plugins.md).
 
 ## Licence et soutien
 

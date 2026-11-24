@@ -12,11 +12,11 @@ const SEAT_NAME_PREFIX: &str = "SolidInserts · ";
 
 type Point = [f64; 3];
 
-fn difference(a: Point, b: Point) -> Point {
+pub(crate) fn difference(a: Point, b: Point) -> Point {
     std::array::from_fn(|i| a[i] - b[i])
 }
 
-fn dot(a: Point, b: Point) -> f64 {
+pub(crate) fn dot(a: Point, b: Point) -> f64 {
     a.into_iter().zip(b).map(|(a, b)| a * b).sum()
 }
 
@@ -63,6 +63,8 @@ pub enum Pick {
 struct Edge {
     index: usize,
     mid: Point,
+    start: Option<Point>,
+    end: Option<Point>,
     #[serde(default)]
     name: Option<String>,
 }
@@ -103,12 +105,14 @@ struct Topology {
 }
 
 impl Topology {
+    fn face(&self, name: &str) -> Option<&Face> {
+        self.faces
+            .iter()
+            .find(|face| face.name.as_deref() == Some(name))
+    }
+
     fn neighbours(&self, edge: &Edge) -> impl Iterator<Item = &Face> {
-        edge.incident().filter_map(|name| {
-            self.faces
-                .iter()
-                .find(|face| face.name.as_deref() == Some(name))
-        })
+        edge.incident().filter_map(|name| self.face(name))
     }
 }
 
@@ -150,15 +154,19 @@ impl Mouth {
             && norm(difference(self.center, other.center)) <= TOLERANCE_MM
     }
 
-    pub fn coplanar_distance(&self, other: &Self) -> Option<f64> {
+    pub fn overlaps(&self, other: &Self, combined_radius: f64, combined_depth: f64) -> bool {
         let delta = difference(self.center, other.center);
-        (self.body == other.body
-            && dot(self.outward, other.outward) > 0.99999
-            && dot(delta, self.outward).abs() <= TOLERANCE_MM)
-            .then(|| norm(delta))
+        let axial = dot(delta, self.outward);
+        let alignment = dot(self.outward, other.outward);
+        let coplanar = alignment > 0.99999 && axial.abs() <= TOLERANCE_MM;
+        let opposed = alignment < -0.99999
+            && (-TOLERANCE_MM..=combined_depth + TOLERANCE_MM).contains(&axial);
+        self.body == other.body
+            && (coplanar || opposed)
+            && radial_distance(delta, self.outward) <= combined_radius + TOLERANCE_MM
     }
 
-    fn inward(&self) -> Point {
+    pub(crate) fn inward(&self) -> Point {
         self.outward.map(|component| -component)
     }
 }
@@ -167,6 +175,8 @@ pub struct Planner<'a, H> {
     host: CallBudget<'a, H>,
     bodies: BTreeMap<String, Topology>,
     previous_seats: BTreeSet<u64>,
+    feature_names: BTreeSet<String>,
+    volumes: BTreeMap<String, f64>,
     selection: Vec<Pick>,
 }
 
@@ -180,7 +190,7 @@ struct CallBudget<'a, H> {
 
 impl<H: Host> Host for CallBudget<'_, H> {
     fn run(&mut self, command: &str, args: Value) -> Result<Value, String> {
-        // SolidCraft 0.41 caps one invocation at 256 calls.
+        // The SolidCraft plugin runtime caps one invocation at 256 calls.
         if self.used == 256 {
             let lang = self.lang;
             return Err(local_format!(
@@ -234,6 +244,11 @@ impl<'a, H: Host> Planner<'a, H> {
             })
             .filter_map(|row| row["id"].as_u64())
             .collect();
+        let feature_names = timeline
+            .iter()
+            .filter_map(|row| row["name"].as_str())
+            .map(str::to_ascii_lowercase)
+            .collect();
         let selection = match picks {
             Some(picks) => picks,
             None => decode_list(&design, "selection", lang)?,
@@ -264,6 +279,8 @@ impl<'a, H: Host> Planner<'a, H> {
             host,
             bodies: BTreeMap::new(),
             previous_seats,
+            feature_names,
+            volumes: BTreeMap::new(),
             selection,
         })
     }
@@ -407,11 +424,22 @@ impl<'a, H: Host> Planner<'a, H> {
     pub fn entrance_clearance(&mut self, mouth: &Mouth) -> Result<f64, String> {
         let lang = self.host.lang;
         let topology = &self.bodies[&mouth.body];
+        let plane = topology.face(&mouth.plane_name);
         let mut distance = f64::INFINITY;
         for edge in &topology.edges {
             if !edge.incident().any(|name| name == mouth.plane_name)
                 || edge.incident().any(|name| name == mouth.side_name)
             {
+                continue;
+            }
+            let analytic = plane.and_then(|plane| {
+                topology
+                    .neighbours(edge)
+                    .filter(|other| other.index != plane.index)
+                    .find_map(|other| planar_edge_distance(edge, plane, other, mouth.center))
+            });
+            if let Some(analytic) = analytic {
+                distance = distance.min(analytic);
                 continue;
             }
             let measure = self.host.run(
@@ -434,13 +462,73 @@ impl<'a, H: Host> Planner<'a, H> {
         })
     }
 
-    pub fn cut(
+    fn reserve_feature_names(&mut self, name: &str) -> (String, String) {
+        let lang = self.host.lang;
+        let profile_base = local_format!(
+            lang,
+            [
+                "Profilo {name}",
+                "Profile {name}",
+                "Profil {name}",
+                "Perfil {name}",
+                "Profil {name}",
+                "Perfil {name}"
+            ]
+        );
+        let cut_base = format!("{SEAT_NAME_PREFIX}{name}");
+        let mut profile = profile_base.clone();
+        let mut cut = cut_base.clone();
+        let mut ordinal = 2;
+        loop {
+            // SolidCraft compares sketch names without ASCII case distinctions.
+            let profile_key = profile.to_ascii_lowercase();
+            let cut_key = cut.to_ascii_lowercase();
+            if !self.feature_names.contains(&profile_key) && !self.feature_names.contains(&cut_key)
+            {
+                self.feature_names.extend([profile_key, cut_key]);
+                return (profile, cut);
+            }
+            profile = format!("{profile_base} ({ordinal})");
+            cut = format!("{cut_base} ({ordinal})");
+            ordinal += 1;
+        }
+    }
+
+    pub(crate) fn print_plane(&mut self, pick: Pick) -> Result<(String, Point, Point), String> {
+        let lang = self.host.lang;
+        let invalid = || {
+            local_format!(
+                lang,
+                [
+                    "Scegli una faccia piana del corpo da appoggiare sul piatto.",
+                    "Select a planar face of the body to place on the print bed."
+                ]
+            )
+        };
+        let Pick::Face { body, index } = pick else {
+            return Err(invalid());
+        };
+        self.load(&body)?;
+        let (point, outward) = self.bodies[&body]
+            .faces
+            .iter()
+            .find(|face| face.index == index && face.exact)
+            .and_then(|face| face.point.zip(face.plane_normal))
+            .ok_or_else(invalid)?;
+        Ok((body, point, outward.map(|value| -value)))
+    }
+
+    pub(crate) fn set_print_face(&mut self, body: &str, point: Point) -> Result<(), String> {
+        self.host
+            .run("body.print_face", json!({"body": body, "point": point}))?;
+        Ok(())
+    }
+
+    fn prepare_profile(
         &mut self,
         mouth: &Mouth,
-        diameter: f64,
-        depth: f64,
-        name: &str,
-    ) -> Result<u64, String> {
+        profile_name: &str,
+    ) -> Result<(u64, String, bool), String> {
         let lang = self.host.lang;
         self.load(&mouth.body)?;
         let topology = &self.bodies[&mouth.body];
@@ -485,12 +573,11 @@ impl<'a, H: Host> Planner<'a, H> {
                 )
             })?;
 
-        let before = volume(&mut self.host, &mouth.body, lang)?;
         let sketch = self.host.run(
             "sketch.create",
             json!({
                 "plane":{"face":plane_point,"body":mouth.body,"index":plane.index},
-                "project_edges":false,"name":local_format!(lang, ["Profilo {name}", "Profile {name}", "Profil {name}", "Perfil {name}", "Profil {name}", "Perfil {name}"])
+                "project_edges":false,"name":profile_name
             }),
         )?;
         let sketch_id = id(&sketch, "sketch", lang)?;
@@ -527,8 +614,8 @@ impl<'a, H: Host> Planner<'a, H> {
             })?;
         let centre = list(&profile, "curves", lang)?
             .iter()
-            .find(|curve| curve["link"] == link["id"] && curve["center"].is_string())
-            .map(|curve| &curve["center"])
+            .filter(|curve| curve["link"] == link["id"])
+            .find_map(|curve| curve["center"].as_str())
             .ok_or_else(|| {
                 local_format!(
                     lang,
@@ -540,7 +627,7 @@ impl<'a, H: Host> Planner<'a, H> {
             })?;
         let centre_point = list(&profile, "points", lang)?
             .iter()
-            .find(|p| &p["id"] == centre)
+            .find(|p| p["id"] == centre)
             .and_then(|p| point(&p["world"]))
             .ok_or_else(|| {
                 local_format!(
@@ -579,12 +666,22 @@ impl<'a, H: Host> Planner<'a, H> {
                 ]
             )
         })?;
-        let direction = if dot(cross(x, y), mouth.inward()) > 0.0 {
-            "positive"
-        } else {
-            "negative"
-        };
+        let positive = dot(cross(x, y), mouth.inward()) > 0.0;
+        Ok((sketch_id, centre.into(), positive))
+    }
 
+    pub fn cut(
+        &mut self,
+        mouth: &Mouth,
+        diameter: f64,
+        depth: f64,
+        name: &str,
+    ) -> Result<u64, String> {
+        let lang = self.host.lang;
+        let (profile_name, cut_name) = self.reserve_feature_names(name);
+        let before = self.body_volume(&mouth.body)?;
+        let (sketch_id, centre, positive) = self.prepare_profile(mouth, &profile_name)?;
+        let direction = if positive { "positive" } else { "negative" };
         let dimension = format!("{diameter} mm");
         let circle = self.host.run(
             "sketch.circle.center",
@@ -618,43 +715,12 @@ impl<'a, H: Host> Planner<'a, H> {
         self.host.run("sketch.finish", json!({}))?;
         let cut = self.host.run("solid.extrude", json!({
             "sketch":sketch_id,"profiles":[{"curves":[curve]}],"operation":"cut","direction":direction,
-            "distance":format!("{depth} mm"),"targets":[mouth.body],"name":format!("{SEAT_NAME_PREFIX}{name}")
+            "distance":format!("{depth} mm"),"targets":[mouth.body],"name":cut_name
         }))?;
-        if cut["changed_bodies"] != json!([mouth.body])
-            || cut["created_bodies"] != json!([])
-            || cut["removed_bodies"] != json!([])
-        {
-            return Err(local_format!(
-                lang,
-                [
-                    "Il taglio su {} non ha modificato unicamente il corpo selezionato.",
-                    "The cut on {} did not modify only the selected body."
-                ],
-                mouth.body
-            ));
-        }
-        let feature = id(&cut, "feature", lang)?;
-        let after = volume(&mut self.host, &mouth.body, lang)?;
         let expected = PI / 4.0
             * (diameter * diameter * depth
                 - mouth.diameter * mouth.diameter * depth.min(mouth.pilot_depth));
-        let tolerance = 0.005_f64.max(expected * 0.0005);
-        if (before - after - expected).abs() > tolerance {
-            return Err(local_format!(
-                lang,
-                [
-                    "La sede su {} interseca un bordo, una cavità o un altro foro alla profondità richiesta.",
-                    "The seat on {} intersects an edge, a cavity or another hole at the requested depth.",
-                    "Die Aufnahme an {} schneidet bei der gewünschten Tiefe eine Kante, einen Hohlraum oder eine andere Bohrung.",
-                    "El alojamiento en {} intersecta un borde, una cavidad u otro agujero a la profundidad solicitada.",
-                    "À la profondeur demandée, le logement sur {} coupe un bord, une cavité ou un autre trou.",
-                    "Na profundidade solicitada, o alojamento em {} intercepta uma borda, uma cavidade ou outro furo."
-                ],
-                mouth.body
-            ));
-        }
-        self.bodies.remove(&mouth.body);
-        self.load(&mouth.body)?;
+        let feature = self.check_cut(mouth, &cut, before, expected)?;
         let floor_name = format!("F{feature}:bottom");
         let has_floor = self.bodies[&mouth.body].faces.iter().any(|face| {
             face.name.as_deref() == Some(&floor_name)
@@ -682,6 +748,108 @@ impl<'a, H: Host> Planner<'a, H> {
         Ok(feature)
     }
 
+    pub(crate) fn cut_pocket(
+        &mut self,
+        mouth: &Mouth,
+        flats: f64,
+        offset: f64,
+        depth: f64,
+        name: &str,
+    ) -> Result<u64, String> {
+        let lang = self.host.lang;
+        let (profile_name, cut_name) = self.reserve_feature_names(name);
+        let before = self.body_volume(&mouth.body)?;
+        let (sketch_id, centre, positive) = self.prepare_profile(mouth, &profile_name)?;
+        let radius = flats / 3.0_f64.sqrt();
+        let points: [[String; 2]; 6] = std::array::from_fn(|vertex| {
+            let (sin, cos) = (vertex as f64 * PI / 3.0).sin_cos();
+            [
+                format!("{centre}.x + {:.9} mm", radius * cos),
+                format!("{centre}.y + {:.9} mm", radius * sin),
+            ]
+        });
+        let hexagon = self.host.run(
+            "sketch.line",
+            json!({
+                "points": points, "closed": true, "infer": false, "connect": false
+            }),
+        )?;
+        if hexagon.pointer("/sketch/dof").and_then(Value::as_u64) != Some(0) {
+            return Err(local_format!(
+                lang,
+                [
+                    "Il profilo esagonale non è completamente vincolato.",
+                    "The hexagon profile is not fully constrained."
+                ]
+            ));
+        }
+        self.host.run("sketch.finish", json!({}))?;
+        let direction = if positive { "positive" } else { "negative" };
+        let signed_offset = if positive { offset } else { -offset };
+        let cut = self.host.run("solid.extrude", json!({
+            "sketch": sketch_id, "profiles": [{"curves": hexagon["created"]["curves"]}],
+            "operation": "cut", "direction": direction, "start_offset": format!("{signed_offset} mm"),
+            "distance": format!("{depth} mm"), "targets": [mouth.body], "name": cut_name
+        }))?;
+        let expected =
+            (3.0_f64.sqrt() / 2.0 * flats.powi(2) - PI * (mouth.diameter / 2.0).powi(2)) * depth;
+        self.check_cut(mouth, &cut, before, expected)
+    }
+
+    fn body_volume(&mut self, body: &str) -> Result<f64, String> {
+        match self.volumes.get(body) {
+            Some(&cached) => Ok(cached),
+            None => {
+                let lang = self.host.lang;
+                volume(&mut self.host, body, lang)
+            }
+        }
+    }
+
+    fn check_cut(
+        &mut self,
+        mouth: &Mouth,
+        cut: &Value,
+        before: f64,
+        expected: f64,
+    ) -> Result<u64, String> {
+        let lang = self.host.lang;
+        if cut["changed_bodies"] != json!([mouth.body])
+            || cut["created_bodies"] != json!([])
+            || cut["removed_bodies"] != json!([])
+        {
+            return Err(local_format!(
+                lang,
+                [
+                    "Il taglio su {} non ha modificato unicamente il corpo selezionato.",
+                    "The cut on {} did not modify only the selected body."
+                ],
+                mouth.body
+            ));
+        }
+        let feature = id(cut, "feature", lang)?;
+        let after = volume(&mut self.host, &mouth.body, lang)?;
+        let tolerance = 0.005_f64.max(expected * 0.0005);
+        if (before - after - expected).abs() > tolerance {
+            return Err(local_format!(
+                lang,
+                [
+                    "La sede su {} interseca un bordo, una cavità o un altro foro alla profondità richiesta.",
+                    "The seat on {} intersects an edge, a cavity or another hole at the requested depth.",
+                    "Die Aufnahme an {} schneidet bei der gewünschten Tiefe eine Kante, einen Hohlraum oder eine andere Bohrung.",
+                    "El alojamiento en {} intersecta un borde, una cavidad u otro agujero a la profundidad solicitada.",
+                    "À la profondeur demandée, le logement sur {} coupe un bord, une cavité ou un autre trou.",
+                    "Na profundidade solicitada, o alojamento em {} intercepta uma borda, uma cavidade ou outro furo."
+                ],
+                mouth.body
+            ));
+        }
+        self.bodies.remove(&mouth.body);
+        self.load(&mouth.body)?;
+        self.volumes.insert(mouth.body.clone(), after);
+        Ok(feature)
+    }
+
     fn load(&mut self, body: &str) -> Result<(), String> {
         let lang = self.host.lang;
         if !self.bodies.contains_key(body) {
@@ -697,6 +865,55 @@ impl<'a, H: Host> Planner<'a, H> {
         }
         Ok(())
     }
+}
+
+fn circular_rim(edge: &Edge, plane: &Face, side: &Face) -> Option<Circle> {
+    let (start, end) = (edge.start?, edge.end?);
+    let (plane_point, normal, cylinder) =
+        (plane.point?, plane.plane_normal?, side.cylinder.as_ref()?);
+    // A closed edge shared by a plane and a perpendicular cylinder is their intersection circle.
+    if !plane.exact
+        || !side.exact
+        || norm(cross(normal, cylinder.axis)) > 1e-8
+        || norm(difference(start, end)) > 1e-7
+        || norm(difference(start, edge.mid)) < cylinder.radius
+    {
+        return None;
+    }
+    let axial = dot(difference(plane_point, cylinder.origin), normal) / dot(cylinder.axis, normal);
+    let center = std::array::from_fn(|i| cylinder.origin[i] + axial * cylinder.axis[i]);
+    let delta = difference(start, center);
+    (dot(delta, normal).abs() <= TOLERANCE_MM
+        && (norm(delta) - cylinder.radius).abs() <= TOLERANCE_MM)
+        .then_some(Circle {
+            center,
+            axis: cylinder.axis,
+            diameter: 2.0 * cylinder.radius,
+        })
+}
+
+fn planar_edge_distance(edge: &Edge, plane: &Face, other: &Face, center: Point) -> Option<f64> {
+    if let Some(circle) = circular_rim(edge, plane, other) {
+        let delta = difference(center, circle.center);
+        return Some(
+            (radial_distance(delta, circle.axis) - circle.diameter / 2.0)
+                .hypot(dot(delta, circle.axis)),
+        );
+    }
+    // Two nonparallel planes meet along a straight line. The vertices bound the segment.
+    if !plane.exact || !other.exact || norm(cross(plane.plane_normal?, other.plane_normal?)) < 1e-5
+    {
+        return None;
+    }
+    let start = edge.start?;
+    let segment = difference(edge.end?, start);
+    let length_sq = dot(segment, segment);
+    if length_sq <= f64::EPSILON {
+        return None;
+    }
+    let delta = difference(center, start);
+    let offset = (dot(segment, delta) / length_sq).clamp(0.0, 1.0);
+    Some(norm(difference(delta, segment.map(|x| offset * x))))
 }
 
 fn entrance<'a>(
@@ -727,7 +944,10 @@ fn entrance<'a>(
     if dot(outward, cylinder.axis).abs() < 0.99999 {
         return Ok(None);
     }
-    let Some(circle) = measure_circle(host, body, edge, lang)? else {
+    let Some(circle) = (match circular_rim(edge, plane, side) {
+        Some(circle) => Some(circle),
+        None => measure_circle(host, body, edge, lang)?,
+    }) else {
         return Ok(None);
     };
     let matches_side = (circle.diameter / 2.0 - cylinder.radius).abs() <= TOLERANCE_MM
@@ -765,11 +985,20 @@ fn bore_end(
         if edge.index == entrance.edge.index
             || depth <= TOLERANCE_MM
             || !edge.incident().any(|name| name == side_name)
+            // The cylinder's seam has no other incident face and cannot end the bore.
+            || edge.incident().all(|name| name == side_name)
             || end.is_some_and(|(previous, _)| depth >= previous - TOLERANCE_MM)
         {
             continue;
         }
-        let Some(circle) = measure_circle(host, body, edge, lang)? else {
+        let analytic = topology
+            .neighbours(edge)
+            .find_map(|plane| circular_rim(edge, plane, entrance.side));
+        let has_certified_rim = analytic.is_some();
+        let Some(circle) = (match analytic {
+            Some(circle) => Some(circle),
+            None => measure_circle(host, body, edge, lang)?,
+        }) else {
             continue;
         };
         if (circle.diameter / 2.0 - radius).abs() > TOLERANCE_MM
@@ -789,12 +1018,25 @@ fn bore_end(
                 })
         });
         let flat_bottom = if let Some(bottom) = bottom {
-            let measurement = host.run(
-                "inspect.measure",
-                json!({"items":[{"type":"face","body":body,"index":bottom.index}]}),
-            )?;
-            let area = number(&measurement["items"][0], "area_mm2", lang)?;
-            (area - PI * radius * radius).abs() < 0.001
+            // A bounded plane whose only edge is this circle is a disk.
+            let single_rim = has_certified_rim
+                && bottom.name.as_deref().is_some_and(|name| {
+                    topology.edges.iter().all(|candidate| {
+                        candidate.name.is_some()
+                            && (candidate.index == edge.index
+                                || !candidate.incident().any(|n| n == name))
+                    })
+                });
+            if single_rim {
+                true
+            } else {
+                let measurement = host.run(
+                    "inspect.measure",
+                    json!({"items":[{"type":"face","body":body,"index":bottom.index}]}),
+                )?;
+                let area = number(&measurement["items"][0], "area_mm2", lang)?;
+                (area - PI * radius * radius).abs() < 0.001
+            }
         } else {
             false
         };

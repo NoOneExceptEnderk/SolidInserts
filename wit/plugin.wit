@@ -52,3 +52,14 @@ world command-plugin {
     import clock;
     export entry;
 }
+
+// Additive capability dialog@0.1, on the commands@0.1 world.
+interface dialog-provider {
+    use types.{json, plugin-error};
+    update-fields: func(entry: string, values: json) -> result<json, plugin-error>;
+}
+
+world command-dialog-plugin {
+    include command-plugin;
+    export dialog-provider;
+}
